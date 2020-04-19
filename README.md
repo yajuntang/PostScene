@@ -15,7 +15,7 @@
 .......
 
 ### 先来看看效果图
-![输入图片说明](https://github.com/yajuntang/PostScene/blob/master/screenshots/101586877574_.pic.jpg)
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0419/205332_ff4b9808_5050702.png "屏幕截图.png")
 
 
 #### 例子
@@ -95,23 +95,24 @@ scene:
 
 2. 在Postman中选择你已经准备好的api文档collection 然后导出。这里导出为 demo.postman_collection.json
 
-![导出api文档collection](https://github.com/yajuntang/PostScene/blob/master/screenshots/71586877556_.pic.jpg)
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0419/205433_ab0d0f7e_5050702.png "屏幕截图.png")
 
 3. 把导出的文档放入项目中的api_document 脚本放入xmind或yaml
 
-![放置脚本](https://github.com/yajuntang/PostScene/blob/master/screenshots/781586877562_.pic_hd.jpg)
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0419/205551_47c8b0be_5050702.png "屏幕截图.png")
 
 4. 打开postman_collection_generator文件中的Index.py 把xmind_path和api_document_path改成你的，右键 Run Index。
 
-![开始转换](https://github.com/yajuntang/PostScene/blob/master/screenshots/91586877568_.pic_hd.jpg)
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0419/205605_d0e7a7e2_5050702.png "屏幕截图.png")
 
 5. 生成的场景文件放在scene文件夹中，使用postman的import 把他导入
 
-![使用postman的import](https://github.com/yajuntang/PostScene/blob/master/screenshots/101586877574_.pic.jpg)
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0419/205611_f9bedc10_5050702.png "屏幕截图.png")
 
 6. 最后可以开始Run collection啦
 
-![最后可以开始Run collection啦](https://github.com/yajuntang/PostScene/blob/master/screenshots/111586877579_.pic.jpg)
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0419/205618_8b34ba14_5050702.png "屏幕截图.png")
+
 #### 教程
 ***
 >如果你对Postman的Script很熟悉，那以下的内容对你来说绝对是无障碍的。不熟悉也没关系，只要照猫画虎，也能完成脚本的编写，设计这个初中就是为了降低门槛。
@@ -121,11 +122,11 @@ scene:
  **基础(Postman的设置变量)**  
 1. 常规， **变量名称** 可以和 **参数名称** 相同，也可以不同，用{{}}包裹
 
-![输入图片说明](https://github.com/yajuntang/PostScene/blob/master/screenshots/121587005682_.pic.jpg)
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0419/205528_aed260dd_5050702.png "屏幕截图.png")
 
 2. json，  **变量名称** 可以和 **参数名称** 相同，也可以不同，用{{}}包裹
 
-![输入图片说明](https://github.com/yajuntang/PostScene/blob/master/screenshots/131587005688_.pic.jpg)
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0419/205535_25d12689_5050702.png "屏幕截图.png")
 
 ### 脚本语法标签
 
@@ -166,4 +167,4 @@ scene:
     - [时间戳转日期格式: $dateFormat]()    
 
 > 写在最后: 目前只提供了这些内置函数，虽然不多但也够用，如果你有什么特别的需要，可以提一个issues。
-> 最后，祝你测试愉快 :blush: 
+> 最后，祝你测试愉快 :blush:
