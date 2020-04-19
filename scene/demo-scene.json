@@ -1,0 +1,1156 @@
+{
+    "info": {
+        "_postman_id": "6a3e602a-18a8-4d9c-8257-c45568c45f14",
+        "name": "demo-scene",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "\u83b7\u53d630\u5929\u5185\u8ba2\u5355\u8bb0\u5f55",
+            "item": [
+                {
+                    "name": "\u767b\u9646",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"userNmae\": \"user\",\n    \"password\": \"{{password}}\",\n    \"time\": \"{{time}}\",\n    \"onceToken\": \"{{onceToken}}\",\n    \"sign\": \"{{sign}}\",\n    \"username\": \"{{username}}\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "https://api.server/services/login",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "login"
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "id": "db5bbc1f-9120-4659-912c-cf50f55a2626",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "vars = pm.variables;",
+                                    "pm.variables.set(\"username\", \"user\");",
+                                    "pm.variables.set(\"password\", \"user123\");",
+                                    "pm.variables.set(\"time\", parseInt(new Date().getTime()/1000));",
+                                    "pm.variables.set(\"onceToken\", CryptoJS.MD5(new Date().getTime()).toString());",
+                                    "\n/*****          \u751f\u6210\u7684\u4ee3\u7801\u8bf7\u52ff\u4fee\u6539        ******/    \n// \u8fde\u63a5\u53c2\u6570\nfunction con_params(params){\n    if(typeof(params) == \"string\"){\n        if(/\\{\\{[\\w]+\\}\\}/.test(params))\n            return vars.get(params.match(/[\\w]+/))\n        return params;\n    }\n    else {\n        let sort_keys = Object.keys(params).sort();\n        let s = '';\n        for(let i in sort_keys) {\n            let k = sort_keys[i];\n            s += k + \"=\" + con_params(params[k]) + \"&\";\n        }\n        return s;\n    }\n}\n\n// \u751f\u6210\u7b7e\u540d\nfunction cal_sign(secret,params){\n    var s = con_params(params);\n    return CryptoJS.MD5(s+\"secret=\"+secret).toString();\n    \n}\n\nvar secret= \"1850e165f1fc19420f2ba3d3a1a5ffe4\" \nlet params = {}\nif (pm.request.method == 'GET')\n    pm.request.url.query.map(it=> params[it.key] = it.value)\nelse\n    params = typeof(request.data) === 'string' ? JSON.parse(request.data) : request.data\ndelete params['sign'];             // \u53bb\u6389sign, \u5f97\u5230\u5143\u7d20\u8bf7\u6c42\u53c2\u6570\nsign = cal_sign(secret, params); // \u8ba1\u7b97\u7b7e\u540d\n\nvars.set('sign',sign)\n/*****  \u5982\u9700\u4fee\u6539\u8bf7\u4fee\u6539python\u5de5\u7a0b\u7684models.sign   ******/   \n"
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "d811e430-c51f-472c-91b7-90beb872881e",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
+                                    "tests['\u65ad\u8a00 json.data.code === \"1\" \u6210\u7acb'] = json.data.code === '1'\ntry{ if(json.data.code === '1') \n\tpm.variables.set(\"token\", json.data.token);\n\tpm.variables.set(\"uid\", json.data.uid); }catch(e){};"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "\u83b7\u53d6\u7528\u6237\u4fe1\u606f",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "token",
+                                "value": "{{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "uid",
+                                    "value": "{{uid}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "sign",
+                                    "value": "{{sign}}",
+                                    "type": "text"
+                                }
+                            ],
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "https://api.server/services/user/get_info",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "user",
+                                "get_info"
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "id": "6b3b6c85-695a-4f3b-a5e7-0cf84e694c5b",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "vars = pm.variables;",
+                                    "\n/*****          \u751f\u6210\u7684\u4ee3\u7801\u8bf7\u52ff\u4fee\u6539        ******/    \n// \u8fde\u63a5\u53c2\u6570\nfunction con_params(params){\n    if(typeof(params) == \"string\"){\n        if(/\\{\\{[\\w]+\\}\\}/.test(params))\n            return vars.get(params.match(/[\\w]+/))\n        return params;\n    }\n    else {\n        let sort_keys = Object.keys(params).sort();\n        let s = '';\n        for(let i in sort_keys) {\n            let k = sort_keys[i];\n            s += k + \"=\" + con_params(params[k]) + \"&\";\n        }\n        return s;\n    }\n}\n\n// \u751f\u6210\u7b7e\u540d\nfunction cal_sign(secret,params){\n    var s = con_params(params);\n    return CryptoJS.MD5(s+\"secret=\"+secret).toString();\n    \n}\n\nvar secret= \"1850e165f1fc19420f2ba3d3a1a5ffe4\" \nlet params = {}\nif (pm.request.method == 'GET')\n    pm.request.url.query.map(it=> params[it.key] = it.value)\nelse\n    params = typeof(request.data) === 'string' ? JSON.parse(request.data) : request.data\ndelete params['sign'];             // \u53bb\u6389sign, \u5f97\u5230\u5143\u7d20\u8bf7\u6c42\u53c2\u6570\nsign = cal_sign(secret, params); // \u8ba1\u7b97\u7b7e\u540d\n\nvars.set('sign',sign)\n/*****  \u5982\u9700\u4fee\u6539\u8bf7\u4fee\u6539python\u5de5\u7a0b\u7684models.sign   ******/   \n"
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "7b5c3329-1967-4651-ae04-7b2e977e7a06",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
+                                    "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "\u5df2\u652f\u4ed8\u8ba2\u5355\u5217\u8868",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "token",
+                                "value": "{{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "https://api.server/services/canteen/orders/paid",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "orders",
+                                "paid"
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "id": "06e96c3f-a2f8-42ad-8bff-6c55e6b2eb45",
+                                "type": "text/javascript",
+                                "exec": []
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "9eb197b6-3806-4ae5-9166-b006b30b4bf9",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
+                                    "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n",
+                                    "\npm.test('\u65ad\u8a00 json.data.orders \u662f\u7b49\u4e8e1', function () {\n    json.data.orders.forEach(it=> pm.expect().to.eql(1));item.status\n});    \n",
+                                    "try{ if(true) postman.setNextRequest(null) }catch(e){}"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "\u4e0b\u5355\u6d41\u7a0b",
+            "item": [
+                {
+                    "name": "\u767b\u9646",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"userNmae\": \"user\",\n    \"password\": \"{{password}}\",\n    \"time\": \"{{time}}\",\n    \"onceToken\": \"{{onceToken}}\",\n    \"sign\": \"{{sign}}\",\n    \"username\": \"{{username}}\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "https://api.server/services/login",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "login"
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "id": "db5bbc1f-9120-4659-912c-cf50f55a2626",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "vars = pm.variables;",
+                                    "pm.variables.set(\"username\", \"user\");",
+                                    "pm.variables.set(\"password\", \"user123\");",
+                                    "pm.variables.set(\"time\", parseInt(new Date().getTime()/1000));",
+                                    "pm.variables.set(\"onceToken\", CryptoJS.MD5(new Date().getTime()).toString());",
+                                    "\n/*****          \u751f\u6210\u7684\u4ee3\u7801\u8bf7\u52ff\u4fee\u6539        ******/    \n// \u8fde\u63a5\u53c2\u6570\nfunction con_params(params){\n    if(typeof(params) == \"string\"){\n        if(/\\{\\{[\\w]+\\}\\}/.test(params))\n            return vars.get(params.match(/[\\w]+/))\n        return params;\n    }\n    else {\n        let sort_keys = Object.keys(params).sort();\n        let s = '';\n        for(let i in sort_keys) {\n            let k = sort_keys[i];\n            s += k + \"=\" + con_params(params[k]) + \"&\";\n        }\n        return s;\n    }\n}\n\n// \u751f\u6210\u7b7e\u540d\nfunction cal_sign(secret,params){\n    var s = con_params(params);\n    return CryptoJS.MD5(s+\"secret=\"+secret).toString();\n    \n}\n\nvar secret= \"1850e165f1fc19420f2ba3d3a1a5ffe4\" \nlet params = {}\nif (pm.request.method == 'GET')\n    pm.request.url.query.map(it=> params[it.key] = it.value)\nelse\n    params = typeof(request.data) === 'string' ? JSON.parse(request.data) : request.data\ndelete params['sign'];             // \u53bb\u6389sign, \u5f97\u5230\u5143\u7d20\u8bf7\u6c42\u53c2\u6570\nsign = cal_sign(secret, params); // \u8ba1\u7b97\u7b7e\u540d\n\nvars.set('sign',sign)\n/*****  \u5982\u9700\u4fee\u6539\u8bf7\u4fee\u6539python\u5de5\u7a0b\u7684models.sign   ******/   \n"
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "d811e430-c51f-472c-91b7-90beb872881e",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
+                                    "tests['\u65ad\u8a00 json.data.code === \"1\" \u6210\u7acb'] = json.data.code === '1'\ntry{ if(json.data.code === '1') \n\tpm.variables.set(\"token\", json.data.token);\n\tpm.variables.set(\"uid\", json.data.uid); }catch(e){};"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "\u901a\u8fc7\u9910\u5385\u540d\u5b57\u641c\u7d22\u9910\u5385",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "token",
+                                "value": "{{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "canteenName",
+                                    "value": "{{canteenName}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "sign",
+                                    "value": "{{sign}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "token",
+                                    "value": "{{token}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "timeS",
+                                    "value": "{{timeS}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "times",
+                                    "value": "{{times}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "dateTimeS",
+                                    "value": "{{dateTimeS}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "dateTimes",
+                                    "value": "{{dateTimes}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "weekStart",
+                                    "value": "{{weekStart}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "weekEnd",
+                                    "value": "{{weekEnd}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "lastWeekStart",
+                                    "value": "{{lastWeekStart}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "lastWeekEnd",
+                                    "value": "{{lastWeekEnd}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "monthStart",
+                                    "value": "{{monthStart}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "monthEnd",
+                                    "value": "{{monthEnd}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "lastMonthStart",
+                                    "value": "{{lastMonthStart}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "lastMonthEnd",
+                                    "value": "{{lastMonthEnd}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "last7DaysStart",
+                                    "value": "{{last7DaysStart}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "last30DaysStart",
+                                    "value": "{{last30DaysStart}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "timeS1",
+                                    "value": "{{timeS1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "dateTimeS1",
+                                    "value": "{{dateTimeS1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "dateTimes1",
+                                    "value": "{{dateTimes1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "weekStart1",
+                                    "value": "{{weekStart1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "weekEnd1",
+                                    "value": "{{weekEnd1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "lastWeekStart1",
+                                    "value": "{{lastWeekStart1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "lastWeekEnd1",
+                                    "value": "{{lastWeekEnd1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "monthStart1",
+                                    "value": "{{monthStart1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "monthEnd1",
+                                    "value": "{{monthEnd1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "lastMonthStart1",
+                                    "value": "{{lastMonthStart1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "lastMonthEnd1",
+                                    "value": "{{lastMonthEnd1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "last7DaysStart1",
+                                    "value": "{{last7DaysStart1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "last30DaysStart1",
+                                    "value": "{{last30DaysStart1}}",
+                                    "type": "text"
+                                }
+                            ],
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "https://api.server/services/canteen/search_by_name",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "search_by_name"
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "id": "4c97c2b3-0f53-46d0-9f1a-0c21491b6673",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "vars = pm.variables;",
+                                    "pm.variables.set(\"token\", CryptoJS.MD5(vars.get('uid')).toString());",
+                                    "pm.variables.set(\"timeS\", new Date().getTime());",
+                                    "pm.variables.set(\"times\", parseInt(new Date().getTime()/1000));",
+                                    "pm.variables.set(\"dateTimeS\", new Date('2019-11-11').getTime());",
+                                    "pm.variables.set(\"dateTimes\", parseInt(new Date('2019-11-11').getTime()/1000));",
+                                    "pm.variables.set(\"weekStart\", (()=> {{\n    const now = new Date();\n    nowDayOfWeek = now.getDay();\n    now.setDate(now.getDate() - nowDayOfWeek);\n    now.setHours(0);\n    now.setMinutes(0);\n    now.setSeconds(0);\n    return now.getTime();\n}})()\n);",
+                                    "pm.variables.set(\"weekEnd\", (()=> {{\n    const now = new Date();\n    nowDayOfWeek = now.getDay();\n    now.setDate(now.getDate() + (6 - nowDayOfWeek))\n    now.setHours(23);\n    now.setMinutes(59);\n    now.setSeconds(59);\n    return now.getTime();\n}})()\n);",
+                                    "pm.variables.set(\"lastWeekStart\", (()=> {{\n    const now = new Date();\n    nowDayOfWeek = now.getDay();\n    now.setDate(now.getDate() - nowDayOfWeek - 7)\n    now.setHours(0);\n    now.setMinutes(0);\n    now.setSeconds(0);\n    return now.getTime();\n}})()\n);",
+                                    "pm.variables.set(\"lastWeekEnd\", (()=> {{\n    const now = new Date();\n    nowDayOfWeek = now.getDay();\n    now.setDate(now.getDate() - nowDayOfWeek - 1);\n    now.setHours(23);\n    now.setMinutes(59);\n    now.setSeconds(59);\n    return now.getTime();\n}})()\n);",
+                                    "pm.variables.set(\"monthStart\", (()=> {{\n    const now = new Date();\n    now.setDate(1);\n    now.setHours(0);\n    now.setMinutes(0);\n    now.setSeconds(0);\n    return now.getTime();\n}})()\n);",
+                                    "pm.variables.set(\"monthEnd\", (()=> {{\n    const now = new Date();\n    now.setMonth(now.getMonth() + 1);\n    now.setDate(0);\n    now.setHours(23);\n    now.setMinutes(59);\n    now.setSeconds(59);\n    return now.getTime();\n}})()\n);",
+                                    "pm.variables.set(\"lastMonthStart\", (()=> {{\n    const now = new Date();\n    now.setMonth(now.getMonth() - 1);\n    now.setDate(1);\n    now.setHours(0);\n    now.setMinutes(0);\n    now.setSeconds(0);\n    return now.getTime();\n}})()\n);",
+                                    "pm.variables.set(\"lastMonthEnd\", (()=> {{\n    const now = new Date();\n    now.setDate(0);\n    now.setHours(23);\n    now.setMinutes(59);\n    now.setSeconds(59);\n    return now.getTime();\n}})()\n);",
+                                    "pm.variables.set(\"last7DaysStart\", (()=> {\n    //n\u4e3a\u4f60\u8981\u4f20\u5165\u7684\u53c2\u6570\uff0c\u5f53\u524d\u4e3a0\uff0c\u524d\u4e00\u5929\u4e3a-1\uff0c\u540e\u4e00\u5929\u4e3a1\n    const date = new Date();\n    date.setDate(date.getDate() + -7);\n    date.setHours(0);\n    date.setMinutes(0);\n    date.setSeconds(0);\n    return date.getTime();\n})()\n);",
+                                    "pm.variables.set(\"last30DaysStart\", (()=> {\n    //n\u4e3a\u4f60\u8981\u4f20\u5165\u7684\u53c2\u6570\uff0c\u5f53\u524d\u4e3a0\uff0c\u524d\u4e00\u5929\u4e3a-1\uff0c\u540e\u4e00\u5929\u4e3a1\n    const date = new Date();\n    date.setDate(date.getDate() + -30);\n    date.setHours(0);\n    date.setMinutes(0);\n    date.setSeconds(0);\n    return date.getTime();\n})()\n);",
+                                    "pm.variables.set(\"timeS1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})(new Date().getTime(),'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"dateTimeS1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})(new Date('2019-11-11').getTime(),'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"dateTimes1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})(parseInt(new Date('2019-11-11').getTime()/1000),'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"weekStart1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})((()=> {{\n    const now = new Date();\n    nowDayOfWeek = now.getDay();\n    now.setDate(now.getDate() - nowDayOfWeek);\n    now.setHours(0);\n    now.setMinutes(0);\n    now.setSeconds(0);\n    return now.getTime();\n}})()\n,'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"weekEnd1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})((()=> {{\n    const now = new Date();\n    nowDayOfWeek = now.getDay();\n    now.setDate(now.getDate() + (6 - nowDayOfWeek))\n    now.setHours(23);\n    now.setMinutes(59);\n    now.setSeconds(59);\n    return now.getTime();\n}})()\n,'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"lastWeekStart1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})((()=> {{\n    const now = new Date();\n    nowDayOfWeek = now.getDay();\n    now.setDate(now.getDate() - nowDayOfWeek - 7)\n    now.setHours(0);\n    now.setMinutes(0);\n    now.setSeconds(0);\n    return now.getTime();\n}})()\n,'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"lastWeekEnd1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})((()=> {{\n    const now = new Date();\n    nowDayOfWeek = now.getDay();\n    now.setDate(now.getDate() - nowDayOfWeek - 1);\n    now.setHours(23);\n    now.setMinutes(59);\n    now.setSeconds(59);\n    return now.getTime();\n}})()\n,'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"monthStart1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})((()=> {{\n    const now = new Date();\n    now.setDate(1);\n    now.setHours(0);\n    now.setMinutes(0);\n    now.setSeconds(0);\n    return now.getTime();\n}})()\n,'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"monthEnd1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})((()=> {{\n    const now = new Date();\n    now.setMonth(now.getMonth() + 1);\n    now.setDate(0);\n    now.setHours(23);\n    now.setMinutes(59);\n    now.setSeconds(59);\n    return now.getTime();\n}})()\n,'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"lastMonthStart1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})((()=> {{\n    const now = new Date();\n    now.setMonth(now.getMonth() - 1);\n    now.setDate(1);\n    now.setHours(0);\n    now.setMinutes(0);\n    now.setSeconds(0);\n    return now.getTime();\n}})()\n,'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"lastMonthEnd1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})((()=> {{\n    const now = new Date();\n    now.setDate(0);\n    now.setHours(23);\n    now.setMinutes(59);\n    now.setSeconds(59);\n    return now.getTime();\n}})()\n,'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"last7DaysStart1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})((()=> {\n    //n\u4e3a\u4f60\u8981\u4f20\u5165\u7684\u53c2\u6570\uff0c\u5f53\u524d\u4e3a0\uff0c\u524d\u4e00\u5929\u4e3a-1\uff0c\u540e\u4e00\u5929\u4e3a1\n    const date = new Date();\n    date.setDate(date.getDate() + -7);\n    date.setHours(0);\n    date.setMinutes(0);\n    date.setSeconds(0);\n    return date.getTime();\n})()\n,'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"last30DaysStart1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})((()=> {\n    //n\u4e3a\u4f60\u8981\u4f20\u5165\u7684\u53c2\u6570\uff0c\u5f53\u524d\u4e3a0\uff0c\u524d\u4e00\u5929\u4e3a-1\uff0c\u540e\u4e00\u5929\u4e3a1\n    const date = new Date();\n    date.setDate(date.getDate() + -30);\n    date.setHours(0);\n    date.setMinutes(0);\n    date.setSeconds(0);\n    return date.getTime();\n})()\n,'YY-MM-DD hh:mm:ss')\n);",
+                                    ""
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "14cd8e38-3894-4e0b-8eb8-ded2241c472d",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
+                                    "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n",
+                                    "tests['\u65ad\u8a00 json.data.code === \"2\" \u6210\u7acb'] = json.data.code === '2'",
+                                    "tests['\u65ad\u8a00 json.data.list.length > 0 \u6210\u7acb'] = json.data.list.length > 0"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "\u901a\u8fc7\u5546\u54c1\u540d\u5b57\u641c\u7d22\u5546\u54c1",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "token",
+                                "value": "{{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "goodsName",
+                                    "value": "{{goodsName}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "canteenId",
+                                    "value": "{{canteenId}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "sign",
+                                    "value": "{{sign}}",
+                                    "type": "text"
+                                }
+                            ],
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "https://api.server/services/canteen/goods/search_by_name",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "goods",
+                                "search_by_name"
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "id": "7926ec8f-62ce-4338-b178-8217cdee8094",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "vars = pm.variables;",
+                                    "pm.variables.set(\"goodsName\", \"\u5965\u5229\u5965\u5343\u5c42\");",
+                                    "\n/*****          \u751f\u6210\u7684\u4ee3\u7801\u8bf7\u52ff\u4fee\u6539        ******/    \n// \u8fde\u63a5\u53c2\u6570\nfunction con_params(params){\n    if(typeof(params) == \"string\"){\n        if(/\\{\\{[\\w]+\\}\\}/.test(params))\n            return vars.get(params.match(/[\\w]+/))\n        return params;\n    }\n    else {\n        let sort_keys = Object.keys(params).sort();\n        let s = '';\n        for(let i in sort_keys) {\n            let k = sort_keys[i];\n            s += k + \"=\" + con_params(params[k]) + \"&\";\n        }\n        return s;\n    }\n}\n\n// \u751f\u6210\u7b7e\u540d\nfunction cal_sign(secret,params){\n    var s = con_params(params);\n    return CryptoJS.MD5(s+\"secret=\"+secret).toString();\n    \n}\n\nvar secret= \"1850e165f1fc19420f2ba3d3a1a5ffe4\" \nlet params = {}\nif (pm.request.method == 'GET')\n    pm.request.url.query.map(it=> params[it.key] = it.value)\nelse\n    params = typeof(request.data) === 'string' ? JSON.parse(request.data) : request.data\ndelete params['sign'];             // \u53bb\u6389sign, \u5f97\u5230\u5143\u7d20\u8bf7\u6c42\u53c2\u6570\nsign = cal_sign(secret, params); // \u8ba1\u7b97\u7b7e\u540d\n\nvars.set('sign',sign)\n/*****  \u5982\u9700\u4fee\u6539\u8bf7\u4fee\u6539python\u5de5\u7a0b\u7684models.sign   ******/   \n"
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "6cd3b006-124b-4cb1-8a67-8d25609b3ea6",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
+                                    "\npm.test('\u65ad\u8a00 json.data.goodsList \u662f\u5305\u542b\"\u5965\u5229\u5965\u5343\u5c42\"', function () {\n    json.data.goodsList.forEach(it=> pm.expect(item.name).to.include(\"\u5965\u5229\u5965\u5343\u5c42\"));\n\tpm.variables.set(\"goodsId\", (()=>{\n        let data = json.data.goodsList.find(it=>  it.goodsName == '\u5965\u5229\u5965\u5343\u5c42')\n        if (data) data = data.goodsId\n        return data})()\n);\n});    \n"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "\u52a0\u5165\u8d2d\u7269\u8f66",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "token",
+                                "value": "{{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"userNmae\": \"user\",\n    \"password\": \"user123\",\n    \"time\": 1586662709332,\n    \"onceToken\": \"1850e165f1fc19420f2ba3d3a1a5ffe4\",\n    \"goodsId\": \"{{goodsId}}\",\n    \"sign\": \"{{sign}}\",\n    \"count\": \"{{count}}\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "https://api.server/services/canteen/pocket/add?goods_id=12",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "pocket",
+                                "add"
+                            ],
+                            "query": [
+                                {
+                                    "key": "goods_id",
+                                    "value": "12"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "id": "248060cd-8823-4cd9-a8d8-9efb324101cb",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "vars = pm.variables;",
+                                    "pm.variables.set(\"count\", 1);",
+                                    "\n/*****          \u751f\u6210\u7684\u4ee3\u7801\u8bf7\u52ff\u4fee\u6539        ******/    \n// \u8fde\u63a5\u53c2\u6570\nfunction con_params(params){\n    if(typeof(params) == \"string\"){\n        if(/\\{\\{[\\w]+\\}\\}/.test(params))\n            return vars.get(params.match(/[\\w]+/))\n        return params;\n    }\n    else {\n        let sort_keys = Object.keys(params).sort();\n        let s = '';\n        for(let i in sort_keys) {\n            let k = sort_keys[i];\n            s += k + \"=\" + con_params(params[k]) + \"&\";\n        }\n        return s;\n    }\n}\n\n// \u751f\u6210\u7b7e\u540d\nfunction cal_sign(secret,params){\n    var s = con_params(params);\n    return CryptoJS.MD5(s+\"secret=\"+secret).toString();\n    \n}\n\nvar secret= \"1850e165f1fc19420f2ba3d3a1a5ffe4\" \nlet params = {}\nif (pm.request.method == 'GET')\n    pm.request.url.query.map(it=> params[it.key] = it.value)\nelse\n    params = typeof(request.data) === 'string' ? JSON.parse(request.data) : request.data\ndelete params['sign'];             // \u53bb\u6389sign, \u5f97\u5230\u5143\u7d20\u8bf7\u6c42\u53c2\u6570\nsign = cal_sign(secret, params); // \u8ba1\u7b97\u7b7e\u540d\n\nvars.set('sign',sign)\n/*****  \u5982\u9700\u4fee\u6539\u8bf7\u4fee\u6539python\u5de5\u7a0b\u7684models.sign   ******/   \n"
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "b04c08ae-5efd-42d7-8d9a-787b867e94a3",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
+                                    "tests['\u65ad\u8a00 json.code === \"1\" \u6210\u7acb'] = json.code === '1'\ntry{ if(json.code === '1') \n\tpm.variables.set(\"pocketId\", json.data.pocketId); }catch(e){};"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "\u8ba2\u5355\u7ed3\u7b97",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "token",
+                                "value": "{{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"userNmae\": \"user\",\n    \"password\": \"user123\",\n    \"time\": 1586662709332,\n    \"onceToken\": \"1850e165f1fc19420f2ba3d3a1a5ffe4\",\n    \"pocketId\": \"{{pocketId}}\",\n    \"sign\": \"{{sign}}\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "https://api.server/services/canteen/pocket/checkout?pocketId=123",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "pocket",
+                                "checkout"
+                            ],
+                            "query": [
+                                {
+                                    "key": "pocketId",
+                                    "value": "123"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "id": "f16a91ba-cc04-4662-b9ea-acf74c27645a",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "vars = pm.variables;",
+                                    "\n/*****          \u751f\u6210\u7684\u4ee3\u7801\u8bf7\u52ff\u4fee\u6539        ******/    \n// \u8fde\u63a5\u53c2\u6570\nfunction con_params(params){\n    if(typeof(params) == \"string\"){\n        if(/\\{\\{[\\w]+\\}\\}/.test(params))\n            return vars.get(params.match(/[\\w]+/))\n        return params;\n    }\n    else {\n        let sort_keys = Object.keys(params).sort();\n        let s = '';\n        for(let i in sort_keys) {\n            let k = sort_keys[i];\n            s += k + \"=\" + con_params(params[k]) + \"&\";\n        }\n        return s;\n    }\n}\n\n// \u751f\u6210\u7b7e\u540d\nfunction cal_sign(secret,params){\n    var s = con_params(params);\n    return CryptoJS.MD5(s+\"secret=\"+secret).toString();\n    \n}\n\nvar secret= \"1850e165f1fc19420f2ba3d3a1a5ffe4\" \nlet params = {}\nif (pm.request.method == 'GET')\n    pm.request.url.query.map(it=> params[it.key] = it.value)\nelse\n    params = typeof(request.data) === 'string' ? JSON.parse(request.data) : request.data\ndelete params['sign'];             // \u53bb\u6389sign, \u5f97\u5230\u5143\u7d20\u8bf7\u6c42\u53c2\u6570\nsign = cal_sign(secret, params); // \u8ba1\u7b97\u7b7e\u540d\n\nvars.set('sign',sign)\n/*****  \u5982\u9700\u4fee\u6539\u8bf7\u4fee\u6539python\u5de5\u7a0b\u7684models.sign   ******/   \n"
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "0a167e1c-e1d5-40e0-8f3e-d69298a4e117",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
+                                    "tests['\u65ad\u8a00 json.code === \"1\" \u6210\u7acb'] = json.code === '1'\ntry{ if(json.code === '1') \n\tpm.variables.set(\"orderId\", json.data.orderId); }catch(e){};"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "\u4f7f\u7528\u4f59\u989d\u7ed3\u7b97",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "token",
+                                "value": "{{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"userNmae\": \"user\",\n    \"password\": \"user123\",\n    \"time\": 1586662709332,\n    \"onceToken\": \"1850e165f1fc19420f2ba3d3a1a5ffe4\",\n    \"orderId\": \"{{orderId}}\",\n    \"sign\": \"{{sign}}\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "https://api.server/services/canteen/pocket/pay_by_balance?orderId=123",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "pocket",
+                                "pay_by_balance"
+                            ],
+                            "query": [
+                                {
+                                    "key": "orderId",
+                                    "value": "123"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "id": "5d512c36-fb61-4d29-8dcd-59257b1ad4a2",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "vars = pm.variables;",
+                                    "\n/*****          \u751f\u6210\u7684\u4ee3\u7801\u8bf7\u52ff\u4fee\u6539        ******/    \n// \u8fde\u63a5\u53c2\u6570\nfunction con_params(params){\n    if(typeof(params) == \"string\"){\n        if(/\\{\\{[\\w]+\\}\\}/.test(params))\n            return vars.get(params.match(/[\\w]+/))\n        return params;\n    }\n    else {\n        let sort_keys = Object.keys(params).sort();\n        let s = '';\n        for(let i in sort_keys) {\n            let k = sort_keys[i];\n            s += k + \"=\" + con_params(params[k]) + \"&\";\n        }\n        return s;\n    }\n}\n\n// \u751f\u6210\u7b7e\u540d\nfunction cal_sign(secret,params){\n    var s = con_params(params);\n    return CryptoJS.MD5(s+\"secret=\"+secret).toString();\n    \n}\n\nvar secret= \"1850e165f1fc19420f2ba3d3a1a5ffe4\" \nlet params = {}\nif (pm.request.method == 'GET')\n    pm.request.url.query.map(it=> params[it.key] = it.value)\nelse\n    params = typeof(request.data) === 'string' ? JSON.parse(request.data) : request.data\ndelete params['sign'];             // \u53bb\u6389sign, \u5f97\u5230\u5143\u7d20\u8bf7\u6c42\u53c2\u6570\nsign = cal_sign(secret, params); // \u8ba1\u7b97\u7b7e\u540d\n\nvars.set('sign',sign)\n/*****  \u5982\u9700\u4fee\u6539\u8bf7\u4fee\u6539python\u5de5\u7a0b\u7684models.sign   ******/   \n"
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "85819429-cfd5-4d34-bcdf-c21c8cc8c4e1",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
+                                    "tests['\u65ad\u8a00 json.code === \"1\" \u6210\u7acb'] = json.code === '1'"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "\u5df2\u652f\u4ed8\u8ba2\u5355\u5217\u8868",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "token",
+                                "value": "{{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "https://api.server/services/canteen/orders/paid",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "orders",
+                                "paid"
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "id": "06e96c3f-a2f8-42ad-8bff-6c55e6b2eb45",
+                                "type": "text/javascript",
+                                "exec": []
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "9eb197b6-3806-4ae5-9166-b006b30b4bf9",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
+                                    "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n",
+                                    "\npm.test('\u65ad\u8a00 json.data.orders \u662f\u7b49\u4e8e1', function () {\n    json.data.orders.forEach(it=> pm.expect().to.eql(1));item.status\n});    \n",
+                                    "try{ if(true) postman.setNextRequest(null) }catch(e){}"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "\u672a\u652f\u4ed8\u8ba2\u5355\u5217\u8868",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "token",
+                                "type": "text",
+                                "value": "{{token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "https://api.server/services/canteen/orders/no_pay",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "orders",
+                                "no_pay"
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "id": "ed833fa4-2034-43c6-ae00-deec09f5412b",
+                                "type": "text/javascript",
+                                "exec": []
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "405865f5-a360-4e5e-aa4f-71b3dec4fb7e",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
+                                    "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n",
+                                    "\npm.test('\u65ad\u8a00 json.data.orders \u662f\u7b49\u4e8e0', function () {\n    json.data.orders.forEach(it=> pm.expect().to.eql(0));item.status\n});    \n"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "\u5185\u7f6e\u51fd\u6570\u6d4b\u8bd5",
+            "item": [
+                {
+                    "name": "\u901a\u8fc7\u9910\u5385\u540d\u5b57\u641c\u7d22\u9910\u5385",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "token",
+                                "value": "{{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "canteenName",
+                                    "value": "{{canteenName}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "sign",
+                                    "value": "{{sign}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "token",
+                                    "value": "{{token}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "timeS",
+                                    "value": "{{timeS}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "times",
+                                    "value": "{{times}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "dateTimeS",
+                                    "value": "{{dateTimeS}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "dateTimes",
+                                    "value": "{{dateTimes}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "weekStart",
+                                    "value": "{{weekStart}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "weekEnd",
+                                    "value": "{{weekEnd}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "lastWeekStart",
+                                    "value": "{{lastWeekStart}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "lastWeekEnd",
+                                    "value": "{{lastWeekEnd}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "monthStart",
+                                    "value": "{{monthStart}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "monthEnd",
+                                    "value": "{{monthEnd}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "lastMonthStart",
+                                    "value": "{{lastMonthStart}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "lastMonthEnd",
+                                    "value": "{{lastMonthEnd}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "last7DaysStart",
+                                    "value": "{{last7DaysStart}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "last30DaysStart",
+                                    "value": "{{last30DaysStart}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "timeS1",
+                                    "value": "{{timeS1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "dateTimeS1",
+                                    "value": "{{dateTimeS1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "dateTimes1",
+                                    "value": "{{dateTimes1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "weekStart1",
+                                    "value": "{{weekStart1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "weekEnd1",
+                                    "value": "{{weekEnd1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "lastWeekStart1",
+                                    "value": "{{lastWeekStart1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "lastWeekEnd1",
+                                    "value": "{{lastWeekEnd1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "monthStart1",
+                                    "value": "{{monthStart1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "monthEnd1",
+                                    "value": "{{monthEnd1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "lastMonthStart1",
+                                    "value": "{{lastMonthStart1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "lastMonthEnd1",
+                                    "value": "{{lastMonthEnd1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "last7DaysStart1",
+                                    "value": "{{last7DaysStart1}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "last30DaysStart1",
+                                    "value": "{{last30DaysStart1}}",
+                                    "type": "text"
+                                }
+                            ],
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "https://api.server/services/canteen/search_by_name",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "search_by_name"
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "id": "4c97c2b3-0f53-46d0-9f1a-0c21491b6673",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "vars = pm.variables;",
+                                    "pm.variables.set(\"token\", CryptoJS.MD5(vars.get('uid')).toString());",
+                                    "pm.variables.set(\"timeS\", new Date().getTime());",
+                                    "pm.variables.set(\"times\", parseInt(new Date().getTime()/1000));",
+                                    "pm.variables.set(\"dateTimeS\", new Date('2019-11-11').getTime());",
+                                    "pm.variables.set(\"dateTimes\", parseInt(new Date('2019-11-11').getTime()/1000));",
+                                    "pm.variables.set(\"weekStart\", (()=> {{\n    const now = new Date();\n    nowDayOfWeek = now.getDay();\n    now.setDate(now.getDate() - nowDayOfWeek);\n    now.setHours(0);\n    now.setMinutes(0);\n    now.setSeconds(0);\n    return now.getTime();\n}})()\n);",
+                                    "pm.variables.set(\"weekEnd\", (()=> {{\n    const now = new Date();\n    nowDayOfWeek = now.getDay();\n    now.setDate(now.getDate() + (6 - nowDayOfWeek))\n    now.setHours(23);\n    now.setMinutes(59);\n    now.setSeconds(59);\n    return now.getTime();\n}})()\n);",
+                                    "pm.variables.set(\"lastWeekStart\", (()=> {{\n    const now = new Date();\n    nowDayOfWeek = now.getDay();\n    now.setDate(now.getDate() - nowDayOfWeek - 7)\n    now.setHours(0);\n    now.setMinutes(0);\n    now.setSeconds(0);\n    return now.getTime();\n}})()\n);",
+                                    "pm.variables.set(\"lastWeekEnd\", (()=> {{\n    const now = new Date();\n    nowDayOfWeek = now.getDay();\n    now.setDate(now.getDate() - nowDayOfWeek - 1);\n    now.setHours(23);\n    now.setMinutes(59);\n    now.setSeconds(59);\n    return now.getTime();\n}})()\n);",
+                                    "pm.variables.set(\"monthStart\", (()=> {{\n    const now = new Date();\n    now.setDate(1);\n    now.setHours(0);\n    now.setMinutes(0);\n    now.setSeconds(0);\n    return now.getTime();\n}})()\n);",
+                                    "pm.variables.set(\"monthEnd\", (()=> {{\n    const now = new Date();\n    now.setMonth(now.getMonth() + 1);\n    now.setDate(0);\n    now.setHours(23);\n    now.setMinutes(59);\n    now.setSeconds(59);\n    return now.getTime();\n}})()\n);",
+                                    "pm.variables.set(\"lastMonthStart\", (()=> {{\n    const now = new Date();\n    now.setMonth(now.getMonth() - 1);\n    now.setDate(1);\n    now.setHours(0);\n    now.setMinutes(0);\n    now.setSeconds(0);\n    return now.getTime();\n}})()\n);",
+                                    "pm.variables.set(\"lastMonthEnd\", (()=> {{\n    const now = new Date();\n    now.setDate(0);\n    now.setHours(23);\n    now.setMinutes(59);\n    now.setSeconds(59);\n    return now.getTime();\n}})()\n);",
+                                    "pm.variables.set(\"last7DaysStart\", (()=> {\n    //n\u4e3a\u4f60\u8981\u4f20\u5165\u7684\u53c2\u6570\uff0c\u5f53\u524d\u4e3a0\uff0c\u524d\u4e00\u5929\u4e3a-1\uff0c\u540e\u4e00\u5929\u4e3a1\n    const date = new Date();\n    date.setDate(date.getDate() + -7);\n    date.setHours(0);\n    date.setMinutes(0);\n    date.setSeconds(0);\n    return date.getTime();\n})()\n);",
+                                    "pm.variables.set(\"last30DaysStart\", (()=> {\n    //n\u4e3a\u4f60\u8981\u4f20\u5165\u7684\u53c2\u6570\uff0c\u5f53\u524d\u4e3a0\uff0c\u524d\u4e00\u5929\u4e3a-1\uff0c\u540e\u4e00\u5929\u4e3a1\n    const date = new Date();\n    date.setDate(date.getDate() + -30);\n    date.setHours(0);\n    date.setMinutes(0);\n    date.setSeconds(0);\n    return date.getTime();\n})()\n);",
+                                    "pm.variables.set(\"timeS1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})(new Date().getTime(),'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"dateTimeS1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})(new Date('2019-11-11').getTime(),'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"dateTimes1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})(parseInt(new Date('2019-11-11').getTime()/1000),'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"weekStart1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})((()=> {{\n    const now = new Date();\n    nowDayOfWeek = now.getDay();\n    now.setDate(now.getDate() - nowDayOfWeek);\n    now.setHours(0);\n    now.setMinutes(0);\n    now.setSeconds(0);\n    return now.getTime();\n}})()\n,'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"weekEnd1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})((()=> {{\n    const now = new Date();\n    nowDayOfWeek = now.getDay();\n    now.setDate(now.getDate() + (6 - nowDayOfWeek))\n    now.setHours(23);\n    now.setMinutes(59);\n    now.setSeconds(59);\n    return now.getTime();\n}})()\n,'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"lastWeekStart1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})((()=> {{\n    const now = new Date();\n    nowDayOfWeek = now.getDay();\n    now.setDate(now.getDate() - nowDayOfWeek - 7)\n    now.setHours(0);\n    now.setMinutes(0);\n    now.setSeconds(0);\n    return now.getTime();\n}})()\n,'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"lastWeekEnd1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})((()=> {{\n    const now = new Date();\n    nowDayOfWeek = now.getDay();\n    now.setDate(now.getDate() - nowDayOfWeek - 1);\n    now.setHours(23);\n    now.setMinutes(59);\n    now.setSeconds(59);\n    return now.getTime();\n}})()\n,'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"monthStart1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})((()=> {{\n    const now = new Date();\n    now.setDate(1);\n    now.setHours(0);\n    now.setMinutes(0);\n    now.setSeconds(0);\n    return now.getTime();\n}})()\n,'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"monthEnd1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})((()=> {{\n    const now = new Date();\n    now.setMonth(now.getMonth() + 1);\n    now.setDate(0);\n    now.setHours(23);\n    now.setMinutes(59);\n    now.setSeconds(59);\n    return now.getTime();\n}})()\n,'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"lastMonthStart1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})((()=> {{\n    const now = new Date();\n    now.setMonth(now.getMonth() - 1);\n    now.setDate(1);\n    now.setHours(0);\n    now.setMinutes(0);\n    now.setSeconds(0);\n    return now.getTime();\n}})()\n,'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"lastMonthEnd1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})((()=> {{\n    const now = new Date();\n    now.setDate(0);\n    now.setHours(23);\n    now.setMinutes(59);\n    now.setSeconds(59);\n    return now.getTime();\n}})()\n,'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"last7DaysStart1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})((()=> {\n    //n\u4e3a\u4f60\u8981\u4f20\u5165\u7684\u53c2\u6570\uff0c\u5f53\u524d\u4e3a0\uff0c\u524d\u4e00\u5929\u4e3a-1\uff0c\u540e\u4e00\u5929\u4e3a1\n    const date = new Date();\n    date.setDate(date.getDate() + -7);\n    date.setHours(0);\n    date.setMinutes(0);\n    date.setSeconds(0);\n    return date.getTime();\n})()\n,'YY-MM-DD hh:mm:ss')\n);",
+                                    "pm.variables.set(\"last30DaysStart1\", ((date, fmt) => {\n  date = new Date(date)\n  const Format = {\n    'M+': date.getMonth() + 1,\n    'd+': date.getDate(),\n    'D+': date.getDate(),\n    'H+': date.getHours(),\n    'h+': date.getHours(),\n    'm+': date.getMinutes(),\n    's+': date.getSeconds(),\n    'S+': date.getMilliseconds(),\n  };\n  if (/(y+)/.test(fmt) || /(Y+)/.test(fmt))\n    fmt = fmt.replace(RegExp.$1, date.getFullYear() + '');\n  for (let k in Format)\n    if (new RegExp('(' + k + ')').test(fmt))\n      fmt = fmt.replace(\n        RegExp.$1,\n        RegExp.$1.length === 1\n          ? Format[k]\n          : ('00' + Format[k]).substr(Format[k].toString().length),\n      );\n  return fmt;\n})((()=> {\n    //n\u4e3a\u4f60\u8981\u4f20\u5165\u7684\u53c2\u6570\uff0c\u5f53\u524d\u4e3a0\uff0c\u524d\u4e00\u5929\u4e3a-1\uff0c\u540e\u4e00\u5929\u4e3a1\n    const date = new Date();\n    date.setDate(date.getDate() + -30);\n    date.setHours(0);\n    date.setMinutes(0);\n    date.setSeconds(0);\n    return date.getTime();\n})()\n,'YY-MM-DD hh:mm:ss')\n);",
+                                    ""
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "14cd8e38-3894-4e0b-8eb8-ded2241c472d",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
+                                    "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n",
+                                    "tests['\u65ad\u8a00 json.data.code === \"2\" \u6210\u7acb'] = json.data.code === '2'",
+                                    "tests['\u65ad\u8a00 json.data.list.length > 0 \u6210\u7acb'] = json.data.list.length > 0"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

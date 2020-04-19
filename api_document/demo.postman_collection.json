@@ -1,0 +1,351 @@
+{
+	"info": {
+		"_postman_id": "f9e36d02-e0de-4a43-b5fe-aa939f5a945b",
+		"name": "demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "登陆",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userNmae\":\"user\",\n\t\"password\":\"user123\",\n\t\"time\":1586662709332,\n\t\"onceToken\":\"1850e165f1fc19420f2ba3d3a1a5ffe4\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.server/services/login",
+					"protocol": "https",
+					"host": [
+						"api",
+						"server"
+					],
+					"path": [
+						"services",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取用户信息",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "uid",
+							"value": "1234567",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.server/services/user/get_info",
+					"protocol": "https",
+					"host": [
+						"api",
+						"server"
+					],
+					"path": [
+						"services",
+						"user",
+						"get_info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "通过餐厅名字搜索餐厅",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "canteenName",
+							"value": "abc",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.server/services/canteen/search_by_name",
+					"protocol": "https",
+					"host": [
+						"api",
+						"server"
+					],
+					"path": [
+						"services",
+						"canteen",
+						"search_by_name"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "通过商品名字搜索商品",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "goodsName",
+							"value": "千层",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.server/services/canteen/goods/search_by_name",
+					"protocol": "https",
+					"host": [
+						"api",
+						"server"
+					],
+					"path": [
+						"services",
+						"canteen",
+						"goods",
+						"search_by_name"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "加入购物车",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userNmae\":\"user\",\n\t\"password\":\"user123\",\n\t\"time\":1586662709332,\n\t\"onceToken\":\"1850e165f1fc19420f2ba3d3a1a5ffe4\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.server/services/canteen/pocket/add?goods_id=12",
+					"protocol": "https",
+					"host": [
+						"api",
+						"server"
+					],
+					"path": [
+						"services",
+						"canteen",
+						"pocket",
+						"add"
+					],
+					"query": [
+						{
+							"key": "goods_id",
+							"value": "12"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "订单结算",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userNmae\":\"user\",\n\t\"password\":\"user123\",\n\t\"time\":1586662709332,\n\t\"onceToken\":\"1850e165f1fc19420f2ba3d3a1a5ffe4\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.server/services/canteen/pocket/checkout?pocketId=123",
+					"protocol": "https",
+					"host": [
+						"api",
+						"server"
+					],
+					"path": [
+						"services",
+						"canteen",
+						"pocket",
+						"checkout"
+					],
+					"query": [
+						{
+							"key": "pocketId",
+							"value": "123"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "使用余额结算",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userNmae\":\"user\",\n\t\"password\":\"user123\",\n\t\"time\":1586662709332,\n\t\"onceToken\":\"1850e165f1fc19420f2ba3d3a1a5ffe4\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.server/services/canteen/pocket/pay_by_balance?orderId=123",
+					"protocol": "https",
+					"host": [
+						"api",
+						"server"
+					],
+					"path": [
+						"services",
+						"canteen",
+						"pocket",
+						"pay_by_balance"
+					],
+					"query": [
+						{
+							"key": "orderId",
+							"value": "123"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "已支付订单列表",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api.server/services/canteen/orders/paid",
+					"protocol": "https",
+					"host": [
+						"api",
+						"server"
+					],
+					"path": [
+						"services",
+						"canteen",
+						"orders",
+						"paid"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "未支付订单列表",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "https://api.server/services/canteen/orders/no_pay",
+					"protocol": "https",
+					"host": [
+						"api",
+						"server"
+					],
+					"path": [
+						"services",
+						"canteen",
+						"orders",
+						"no_pay"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
