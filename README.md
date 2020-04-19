@@ -27,66 +27,66 @@
 ```yaml
 name: demo*scene                                              #collection 的名字
 scene:
-  * name: 下单流程                                             #collection文件夹的名字
-    scene:
-    * 登陆:                                                   #API接口名称
-        pre:                                                 #接口请求前脚本
-          sign:                                              #参数签名
-            secret: 1850e165f1fc19420f2ba3d3a1a5ffe4
-          set:                                               #设置变量值
-            username: user
-            password: user123
-            time: $$times                                    #获取现在的时间
-            onceToken: $$uuid32                              #生成32位的uuid
-        tests:                                               #请求后脚本
-          assert:                                            #请求后断言
-            express:
-              content: $json.data.code === '1'               #断言返回的json数据的code 是否等于1
-              set:                                           #断言成功保存token和uid数据
-                token: $json.data.token
-                uid: $json.data.uid
-    * 通过餐厅名字搜索餐厅:
-        pre:
-          sign:
-            secret: 1850e165f1fc19420f2ba3d3a1a5ffe4
-          set:
-            canteenName: 喜茶
-        tests:
-          assert:
-            expect:                                         #断言返回的canteenList的每一个对象的名称都包含喜茶
-              content: $json.data.canteenList
-              item: $it.name                                 
-              include: 喜茶
-              set:
-                canteenId: $$find(json.data.canteenList, it.canteenName == '喜茶GO').canteenId  #获取喜茶Go的CanteenId
-    * 通过商品名字搜索商品:
-        pre:
-          sign:
-            secret: 1850e165f1fc19420f2ba3d3a1a5ffe4
-          ref: canteenId
-          set:
-            goodsName: 奥利奥千层
-        tests:
-          assert:
-            expect:
-              content: $json.data.goodsList
-              item: $item.name
-              include: 奥利奥千层
-              set:
-                goodsId: $$find(json.data.goodsList, it.goodsName == '奥利奥千层').goodsId
-    * 加入购物车:
-        pre:
-          sign:
-            secret: 1850e165f1fc19420f2ba3d3a1a5ffe4
-          ref: goodsId
-          set:
-            count: 1
-        tests:
-          assert:
-            express:
-              content: $json.code === '1'
-              set:
-                pocketId: $json.data.pocketId
+   name: 下单流程                                             #collection文件夹的名字
+   scene:
+     登陆:                                                   #API接口名称
+       pre:                                                 #接口请求前脚本
+         sign:                                              #参数签名
+           secret: 1850e165f1fc19420f2ba3d3a1a5ffe4
+         set:                                               #设置变量值
+           username: user
+           password: user123
+           time: $$times                                    #获取现在的时间
+           onceToken: $$uuid32                              #生成32位的uuid
+       tests:                                               #请求后脚本
+         assert:                                            #请求后断言
+           express:
+             content: $json.data.code === '1'               #断言返回的json数据的code 是否等于1
+             set:                                           #断言成功保存token和uid数据
+               token: $json.data.token
+               uid: $json.data.uid
+     通过餐厅名字搜索餐厅:
+       pre:
+         sign:
+           secret: 1850e165f1fc19420f2ba3d3a1a5ffe4
+         set:
+           canteenName: 喜茶
+       tests:
+         assert:
+           expect:                                         #断言返回的canteenList的每一个对象的名称都包含喜茶
+             content: $json.data.canteenList
+             item: $it.name                                 
+             include: 喜茶
+             set:
+               canteenId: $$find(json.data.canteenList, it.canteenName == '喜茶GO').canteenId  #获取喜茶Go的CanteenId
+     通过商品名字搜索商品:
+       pre:
+         sign:
+           secret: 1850e165f1fc19420f2ba3d3a1a5ffe4
+         ref: canteenId
+         set:
+           goodsName: 奥利奥千层
+       tests:
+         assert:
+           expect:
+             content: $json.data.goodsList
+             item: $item.name
+             include: 奥利奥千层
+             set:
+               goodsId: $$find(json.data.goodsList, it.goodsName == '奥利奥千层').goodsId
+     加入购物车:
+       pre:
+         sign:
+           secret: 1850e165f1fc19420f2ba3d3a1a5ffe4
+         ref: goodsId
+         set:
+           count: 1
+       tests:
+         assert:
+           express:
+             content: $json.code === '1'
+             set:
+               pocketId: $json.data.pocketId
 .......
 
 ```
