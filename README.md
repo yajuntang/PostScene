@@ -30,11 +30,11 @@ pip install -U PostScene
 #### 例子
 ***
 * 新建一个文件，名字叫什么不重要，但为了迭代开发的考虑，最好还是加上版本号。
-> 外卖App接口测试v1.0.yaml
+> demo-scenev1.0.yaml
 * 脚本编写
 
 ```yaml
-name: demo*scene                                              #collection 的名字
+name: demo-scenev1.0                                         #collection 的名字
 scene:
    name: 下单流程                                             #collection文件夹的名字
    scene:
@@ -124,7 +124,7 @@ scene:
 
 #### 教程
 ***
->如果你对Postman的Script很熟悉，那以下的内容对你来说绝对是无障碍的。不熟悉也没关系，只要照猫画虎，也能完成脚本的编写，设计这个初中就是为了降低门槛。
+>如果你对Postman的Script很熟悉，那以下的内容对你来说绝对是无障碍的。不熟悉也没关系，只要照猫画虎，也能完成脚本的编写，设计这个初衷就是为了降低门槛。
 
 **学前须知** : 每一个测试用例都由两部分组成 **pre(请求前)** 和 **tests(请求后)** ，pre可以没有，但tests断言一定要有，不然没有意义。每一个测试用例的名称必须和文档中的collection的接口名称一致。这是规范。
 
