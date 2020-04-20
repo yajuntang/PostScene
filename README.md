@@ -104,11 +104,11 @@ scene:
 
 2. 在Postman中选择你已经准备好的api文档collection 然后导出。这里导出为 demo.postman_collection.json
 
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0419/205433_ab0d0f7e_5050702.png "屏幕截图.png")
+<img src="https://images.gitee.com/uploads/images/2020/0419/205433_ab0d0f7e_5050702.png" width = 50%/>
 
 3. 把导出的文档放入项目中的api_document 脚本放入xmind或yaml
 
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0420/111101_b755e5d4_5050702.png "屏幕截图.png")
+<img src="https://images.gitee.com/uploads/images/2020/0420/111101_b755e5d4_5050702.png" width = 50%/>
 
 4. 打开src文件中的Index.py 把xmind_path和api_document_path改成你的，右键 Run Index。
 
@@ -116,7 +116,7 @@ scene:
 
 5. 生成的场景文件放在src/scene文件夹中，使用postman的import 把他导入
 
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0419/205611_f9bedc10_5050702.png "屏幕截图.png")
+<img src="https://images.gitee.com/uploads/images/2020/0419/205611_f9bedc10_5050702.png" width = 50%/>
 
 6. 最后可以开始Run collection啦
 
