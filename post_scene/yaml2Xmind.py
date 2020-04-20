@@ -49,8 +49,9 @@ def dict2xmind(dicts, filename, path):
     xmind.save(workbook, file_path)
 
 
-if __name__ == '__main__':
-    file = open('../yaml/demo.yaml', 'r', encoding='utf-8')
-    yaml = YAML()
-    script = yaml.load(file)
-    dict2xmind(script, "demo", path="../")
+# demo
+# if __name__ == '__main__':
+#     file = open('../yaml/demo.yaml', 'r', encoding='utf-8')
+#     yaml = YAML()
+#     script = yaml.load(file)
+#     dict2xmind(script, "demo", path="../")

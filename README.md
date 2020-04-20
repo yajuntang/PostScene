@@ -18,6 +18,15 @@
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0419/205332_ff4b9808_5050702.png "屏幕截图.png")
 
 
+### 安装
+
+使用 `pip` 安装PostScene 
+
+```
+pip install -U PostScene
+```
+
+
 #### 例子
 ***
 * 新建一个文件，名字叫什么不重要，但为了迭代开发的考虑，最好还是加上版本号。

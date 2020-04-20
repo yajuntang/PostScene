@@ -2,11 +2,11 @@ import json
 import os
 
 import requests
-import yaml
+from ruamel.yaml import YAML
 
-from postman_collection_generator.Xmind2Yaml import xmind2Yaml
-from postman_collection_generator.creator import PostmanJson
-from postman_collection_generator.parser import Utils, Parse
+from post_scene.Xmind2Yaml import xmind2Yaml
+from post_scene.creator import PostmanJson
+from post_scene.parser import Utils, Parse
 
 class PostScene:
     @staticmethod
@@ -42,7 +42,8 @@ class PostScene:
     @staticmethod
     def generate(yaml_path, postman_data_path, scene_dirs='../scene'):
         file = open(yaml_path, 'r', encoding='utf-8')
-        script = yaml.load(file, Loader=yaml.Loader)
+        yaml = YAML()
+        script = yaml.load(file)
 
         scenes = Parse.parse_scene(script['scene'])
 

@@ -1,4 +1,4 @@
-from postman_collection_generator.models import Models
+from post_scene.models import Models
 
 
 class BuiltFunction:

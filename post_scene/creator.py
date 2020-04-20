@@ -1,7 +1,7 @@
 import uuid
 
-from postman_collection_generator.BuiltFunction import BuiltFunction
-from postman_collection_generator.models import Models
+from post_scene.BuiltFunction import BuiltFunction
+from post_scene.models import Models
 
 
 def check_none_default(content, default):

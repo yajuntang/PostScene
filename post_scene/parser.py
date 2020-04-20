@@ -1,8 +1,7 @@
 import json
-import sys
 
-from postman_collection_generator.creator import SetMethod, AssertMethod
-from postman_collection_generator.models import Models
+from post_scene.creator import SetMethod, AssertMethod
+from post_scene.models import Models
 
 set_mapping = {
     'set-global': 'set_global_var',  # 设置全局变量的值

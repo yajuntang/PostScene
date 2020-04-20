@@ -81,6 +81,6 @@ def xmind2Yaml(path, file_name):
     yaml = YAML()
     yaml.dump(yaml_data, stream)
 
-xmind2Yaml('../', '自动化测试')
+# xmind2Yaml('../', '自动化测试')
 
 
