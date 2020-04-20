@@ -15,7 +15,7 @@
 .......
 
 ### 先来看看效果图
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0419/205332_ff4b9808_5050702.png "屏幕截图.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0420/111447_678b9ab8_5050702.png "屏幕截图.png")
 
 
 ### 安装
@@ -108,13 +108,13 @@ scene:
 
 3. 把导出的文档放入项目中的api_document 脚本放入xmind或yaml
 
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0419/205551_47c8b0be_5050702.png "屏幕截图.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0420/111101_b755e5d4_5050702.png "屏幕截图.png")
 
-4. 打开postman_collection_generator文件中的Index.py 把xmind_path和api_document_path改成你的，右键 Run Index。
+4. 打开src文件中的Index.py 把xmind_path和api_document_path改成你的，右键 Run Index。
 
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0420/110449_d637d0a7_5050702.png "屏幕截图.png")
 
-5. 生成的场景文件放在scene文件夹中，使用postman的import 把他导入
+5. 生成的场景文件放在src/scene文件夹中，使用postman的import 把他导入
 
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0419/205611_f9bedc10_5050702.png "屏幕截图.png")
 
