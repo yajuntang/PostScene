@@ -112,7 +112,7 @@ scene:
 
 4. 打开postman_collection_generator文件中的Index.py 把xmind_path和api_document_path改成你的，右键 Run Index。
 
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0419/205605_d0e7a7e2_5050702.png "屏幕截图.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0420/110449_d637d0a7_5050702.png "屏幕截图.png")
 
 5. 生成的场景文件放在scene文件夹中，使用postman的import 把他导入
 
