@@ -1,6 +1,6 @@
 {
     "info": {
-        "_postman_id": "6a3e602a-18a8-4d9c-8257-c45568c45f14",
+        "_postman_id": "565d414f-fdc5-4c15-a5ef-dd326d90fb09",
         "name": "demo-scene",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
@@ -40,7 +40,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "db5bbc1f-9120-4659-912c-cf50f55a2626",
+                                "id": "8b591959-e935-4804-8a18-323557f133f0",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -48,7 +48,7 @@
                                     "pm.variables.set(\"username\", \"user\");",
                                     "pm.variables.set(\"password\", \"user123\");",
                                     "pm.variables.set(\"time\", parseInt(new Date().getTime()/1000));",
-                                    "pm.variables.set(\"onceToken\", CryptoJS.MD5(new Date().getTime()).toString());",
+                                    "pm.variables.set(\"onceToken\", CryptoJS.MD5(new Date().getTime().toString()).toString());",
                                     "\n/*****          \u751f\u6210\u7684\u4ee3\u7801\u8bf7\u52ff\u4fee\u6539        ******/    \n// \u8fde\u63a5\u53c2\u6570\nfunction con_params(params){\n    if(typeof(params) == \"string\"){\n        if(/\\{\\{[\\w]+\\}\\}/.test(params))\n            return vars.get(params.match(/[\\w]+/))\n        return params;\n    }\n    else {\n        let sort_keys = Object.keys(params).sort();\n        let s = '';\n        for(let i in sort_keys) {\n            let k = sort_keys[i];\n            s += k + \"=\" + con_params(params[k]) + \"&\";\n        }\n        return s;\n    }\n}\n\n// \u751f\u6210\u7b7e\u540d\nfunction cal_sign(secret,params){\n    var s = con_params(params);\n    return CryptoJS.MD5(s+\"secret=\"+secret).toString();\n    \n}\n\nvar secret= \"1850e165f1fc19420f2ba3d3a1a5ffe4\" \nlet params = {}\nif (pm.request.method == 'GET')\n    pm.request.url.query.map(it=> params[it.key] = it.value)\nelse\n    params = typeof(request.data) === 'string' ? JSON.parse(request.data) : request.data\ndelete params['sign'];             // \u53bb\u6389sign, \u5f97\u5230\u5143\u7d20\u8bf7\u6c42\u53c2\u6570\nsign = cal_sign(secret, params); // \u8ba1\u7b97\u7b7e\u540d\n\nvars.set('sign',sign)\n/*****  \u5982\u9700\u4fee\u6539\u8bf7\u4fee\u6539python\u5de5\u7a0b\u7684models.sign   ******/   \n"
                                 ]
                             }
@@ -56,13 +56,13 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "d811e430-c51f-472c-91b7-90beb872881e",
+                                "id": "05043141-6d77-40d6-adc6-8225ecc3255d",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
                                     "json = pm.response.json();",
                                     "vars = pm.variables;",
-                                    "tests['\u65ad\u8a00 json.data.code === \"1\" \u6210\u7acb'] = json.data.code === '1'\ntry{ if(json.data.code === '1') \n\tpm.variables.set(\"token\", json.data.token);\n\tpm.variables.set(\"uid\", json.data.uid); }catch(e){};"
+                                    "tests['\u65ad\u8a00 json.data.code === \"1\" \u6210\u7acb'] = json.data.code === '1'\ntry{ if(json.data.code === '1'){ \n\tpm.variables.set(\"token\", json.data.token);\n\tpm.variables.set(\"uid\", json.data.uid); } }catch(e){ console.log(e) };"
                                 ]
                             }
                         }
@@ -118,7 +118,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "6b3b6c85-695a-4f3b-a5e7-0cf84e694c5b",
+                                "id": "eb2cf3e6-a48a-4383-86ee-1a1cf98f826e",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -130,7 +130,7 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "7b5c3329-1967-4651-ae04-7b2e977e7a06",
+                                "id": "3148fd1f-6a95-40ce-9b43-03387a023077",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -173,7 +173,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "06e96c3f-a2f8-42ad-8bff-6c55e6b2eb45",
+                                "id": "825fdf87-4551-4af5-beb3-aba898838ff4",
                                 "type": "text/javascript",
                                 "exec": []
                             }
@@ -181,7 +181,7 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "9eb197b6-3806-4ae5-9166-b006b30b4bf9",
+                                "id": "01b9890d-9e11-4a87-b975-57a502711412",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -189,7 +189,7 @@
                                     "vars = pm.variables;",
                                     "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n",
                                     "\npm.test('\u65ad\u8a00 json.data.orders \u662f\u7b49\u4e8e1', function () {\n    json.data.orders.forEach(it=> pm.expect().to.eql(1));item.status\n});    \n",
-                                    "try{ if(true) postman.setNextRequest(null) }catch(e){}"
+                                    "try{ if(true) { postman.setNextRequest(null)} }catch(e){console.log(e)}"
                                 ]
                             }
                         }
@@ -232,7 +232,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "db5bbc1f-9120-4659-912c-cf50f55a2626",
+                                "id": "8b591959-e935-4804-8a18-323557f133f0",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -240,7 +240,7 @@
                                     "pm.variables.set(\"username\", \"user\");",
                                     "pm.variables.set(\"password\", \"user123\");",
                                     "pm.variables.set(\"time\", parseInt(new Date().getTime()/1000));",
-                                    "pm.variables.set(\"onceToken\", CryptoJS.MD5(new Date().getTime()).toString());",
+                                    "pm.variables.set(\"onceToken\", CryptoJS.MD5(new Date().getTime().toString()).toString());",
                                     "\n/*****          \u751f\u6210\u7684\u4ee3\u7801\u8bf7\u52ff\u4fee\u6539        ******/    \n// \u8fde\u63a5\u53c2\u6570\nfunction con_params(params){\n    if(typeof(params) == \"string\"){\n        if(/\\{\\{[\\w]+\\}\\}/.test(params))\n            return vars.get(params.match(/[\\w]+/))\n        return params;\n    }\n    else {\n        let sort_keys = Object.keys(params).sort();\n        let s = '';\n        for(let i in sort_keys) {\n            let k = sort_keys[i];\n            s += k + \"=\" + con_params(params[k]) + \"&\";\n        }\n        return s;\n    }\n}\n\n// \u751f\u6210\u7b7e\u540d\nfunction cal_sign(secret,params){\n    var s = con_params(params);\n    return CryptoJS.MD5(s+\"secret=\"+secret).toString();\n    \n}\n\nvar secret= \"1850e165f1fc19420f2ba3d3a1a5ffe4\" \nlet params = {}\nif (pm.request.method == 'GET')\n    pm.request.url.query.map(it=> params[it.key] = it.value)\nelse\n    params = typeof(request.data) === 'string' ? JSON.parse(request.data) : request.data\ndelete params['sign'];             // \u53bb\u6389sign, \u5f97\u5230\u5143\u7d20\u8bf7\u6c42\u53c2\u6570\nsign = cal_sign(secret, params); // \u8ba1\u7b97\u7b7e\u540d\n\nvars.set('sign',sign)\n/*****  \u5982\u9700\u4fee\u6539\u8bf7\u4fee\u6539python\u5de5\u7a0b\u7684models.sign   ******/   \n"
                                 ]
                             }
@@ -248,13 +248,13 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "d811e430-c51f-472c-91b7-90beb872881e",
+                                "id": "05043141-6d77-40d6-adc6-8225ecc3255d",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
                                     "json = pm.response.json();",
                                     "vars = pm.variables;",
-                                    "tests['\u65ad\u8a00 json.data.code === \"1\" \u6210\u7acb'] = json.data.code === '1'\ntry{ if(json.data.code === '1') \n\tpm.variables.set(\"token\", json.data.token);\n\tpm.variables.set(\"uid\", json.data.uid); }catch(e){};"
+                                    "tests['\u65ad\u8a00 json.data.code === \"1\" \u6210\u7acb'] = json.data.code === '1'\ntry{ if(json.data.code === '1'){ \n\tpm.variables.set(\"token\", json.data.token);\n\tpm.variables.set(\"uid\", json.data.uid); } }catch(e){ console.log(e) };"
                                 ]
                             }
                         }
@@ -450,7 +450,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "4c97c2b3-0f53-46d0-9f1a-0c21491b6673",
+                                "id": "a05c1e00-c759-4e1a-a839-863072b29fa3",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -490,7 +490,7 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "14cd8e38-3894-4e0b-8eb8-ded2241c472d",
+                                "id": "956649a9-05ae-49ad-b909-89b6b61b2f94",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -560,7 +560,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "7926ec8f-62ce-4338-b178-8217cdee8094",
+                                "id": "db1b66da-af8e-46f2-b04a-96f8273252ab",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -573,7 +573,7 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "6cd3b006-124b-4cb1-8a67-8d25609b3ea6",
+                                "id": "1a872f13-610c-48c6-bb24-0ed2b4fadfb0",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -631,7 +631,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "248060cd-8823-4cd9-a8d8-9efb324101cb",
+                                "id": "1e0acbd3-975e-4802-9754-53dbe1d3bb2a",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -644,13 +644,13 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "b04c08ae-5efd-42d7-8d9a-787b867e94a3",
+                                "id": "36a0ecb9-2822-4804-8ad6-eb18b2435d6a",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
                                     "json = pm.response.json();",
                                     "vars = pm.variables;",
-                                    "tests['\u65ad\u8a00 json.code === \"1\" \u6210\u7acb'] = json.code === '1'\ntry{ if(json.code === '1') \n\tpm.variables.set(\"pocketId\", json.data.pocketId); }catch(e){};"
+                                    "tests['\u65ad\u8a00 json.code === \"1\" \u6210\u7acb'] = json.code === '1'\ntry{ if(json.code === '1'){ \n\tpm.variables.set(\"pocketId\", json.data.pocketId); } }catch(e){ console.log(e) };"
                                 ]
                             }
                         }
@@ -702,7 +702,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "f16a91ba-cc04-4662-b9ea-acf74c27645a",
+                                "id": "d50e69dd-e30d-4b53-bf3b-0136259082a0",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -714,13 +714,13 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "0a167e1c-e1d5-40e0-8f3e-d69298a4e117",
+                                "id": "9b4d6415-3e7f-4c01-834f-0a5031c9ded0",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
                                     "json = pm.response.json();",
                                     "vars = pm.variables;",
-                                    "tests['\u65ad\u8a00 json.code === \"1\" \u6210\u7acb'] = json.code === '1'\ntry{ if(json.code === '1') \n\tpm.variables.set(\"orderId\", json.data.orderId); }catch(e){};"
+                                    "tests['\u65ad\u8a00 json.code === \"1\" \u6210\u7acb'] = json.code === '1'\ntry{ if(json.code === '1'){ \n\tpm.variables.set(\"orderId\", json.data.orderId); } }catch(e){ console.log(e) };"
                                 ]
                             }
                         }
@@ -772,7 +772,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "5d512c36-fb61-4d29-8dcd-59257b1ad4a2",
+                                "id": "3abe2fd6-29c3-474f-91a6-fbd361f0f247",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -784,7 +784,7 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "85819429-cfd5-4d34-bcdf-c21c8cc8c4e1",
+                                "id": "5e4f6703-b8c7-48b8-a9c0-751ba1a2fb19",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -827,7 +827,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "06e96c3f-a2f8-42ad-8bff-6c55e6b2eb45",
+                                "id": "825fdf87-4551-4af5-beb3-aba898838ff4",
                                 "type": "text/javascript",
                                 "exec": []
                             }
@@ -835,7 +835,7 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "9eb197b6-3806-4ae5-9166-b006b30b4bf9",
+                                "id": "01b9890d-9e11-4a87-b975-57a502711412",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -843,7 +843,7 @@
                                     "vars = pm.variables;",
                                     "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n",
                                     "\npm.test('\u65ad\u8a00 json.data.orders \u662f\u7b49\u4e8e1', function () {\n    json.data.orders.forEach(it=> pm.expect().to.eql(1));item.status\n});    \n",
-                                    "try{ if(true) postman.setNextRequest(null) }catch(e){}"
+                                    "try{ if(true) { postman.setNextRequest(null)} }catch(e){console.log(e)}"
                                 ]
                             }
                         }
@@ -880,7 +880,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "ed833fa4-2034-43c6-ae00-deec09f5412b",
+                                "id": "431b2de3-0727-4e2e-acfa-fc7172180eb3",
                                 "type": "text/javascript",
                                 "exec": []
                             }
@@ -888,7 +888,7 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "405865f5-a360-4e5e-aa4f-71b3dec4fb7e",
+                                "id": "b2068b12-9387-46e0-8fca-3303a673a192",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -1096,7 +1096,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "4c97c2b3-0f53-46d0-9f1a-0c21491b6673",
+                                "id": "a05c1e00-c759-4e1a-a839-863072b29fa3",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -1136,7 +1136,7 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "14cd8e38-3894-4e0b-8eb8-ded2241c472d",
+                                "id": "956649a9-05ae-49ad-b909-89b6b61b2f94",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",

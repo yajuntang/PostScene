@@ -172,7 +172,7 @@ scene:
               last7DaysStart1: $$dateFormat($last7DaysStart,'YY-MM-DD hh:mm:ss')
               last30DaysStart1: $$dateFormat($last30DaysStart,'YY-MM-DD hh:mm:ss')
           tests:
-            assert:
+            assert:                             # 使用列表 也可以存在多个一样的断言类型
               - status: 200
               - express: $json.data.code === '2'
               - express: $json.data.list.length > 0
