@@ -166,5 +166,8 @@ scene:
     - [获取前30天时间戳: $last30DaysStart](https://gitee.com/tangyajun/PostScene/wikis/%E5%BF%AB%E6%8D%B7%E5%87%BD%E6%95%B0?sort_id=2129309)    
     - [时间戳转日期格式: $dateFormat](https://gitee.com/tangyajun/PostScene/wikis/%E5%BF%AB%E6%8D%B7%E5%87%BD%E6%95%B0?sort_id=2129309)    
 
-> 写在最后: 目前只提供了这些内置函数，虽然不多但也够用，如果你有什么特别的需要，可以提一个issues。
+> 写在最后: 目前只提供了这些内置函数，虽然不多但也够用，如果你有什么特别的需要，可以提一个issues    
 > 最后，祝你测试愉快 :blush:
+****
+编码不易，如果你觉得这是一个不错的工具，并且支持我继续努力，那就打赏几块钱给本仙女买杯奶茶吧 :stuck_out_tongue_closed_eyes: 
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0420/174915_63a25225_5050702.png "屏幕截图.png")
