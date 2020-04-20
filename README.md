@@ -120,7 +120,7 @@ scene:
 
 6. 最后可以开始Run collection啦
 
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0419/205618_8b34ba14_5050702.png "屏幕截图.png")
+<img src="https://images.gitee.com/uploads/images/2020/0419/205618_8b34ba14_5050702.png" width = 50%/>
 
 #### 教程
 ***
