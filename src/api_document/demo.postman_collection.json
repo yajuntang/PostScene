@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"userNmae\":\"user\",\n\t\"password\":\"user123\",\n\t\"time\":1586662709332,\n\t\"onceToken\":\"1850e165f1fc19420f2ba3d3a1a5ffe4\"\n}",
+					"raw": "{\n\t\"userName\":\"user\",\n\t\"password\":\"user123\",\n\t\"time\":1586662709332,\n\t\"onceToken\":\"1850e165f1fc19420f2ba3d3a1a5ffe4\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"

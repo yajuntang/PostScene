@@ -43,7 +43,7 @@ scene:
          sign:                                              #参数签名
            secret: 1850e165f1fc19420f2ba3d3a1a5ffe4
          set:                                               #设置变量值
-           username: user
+           userName: user
            password: user123
            time: $$times                                    #获取现在的时间
            onceToken: $$uuid32                              #生成32位的uuid

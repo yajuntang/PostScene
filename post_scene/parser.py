@@ -1,3 +1,4 @@
+import copy
 import json
 
 from post_scene.creator import SetMethod, AssertMethod
@@ -115,9 +116,13 @@ class Utils:
             if 'item' in item:
                 result = Utils.find_postman_item_by_name(name, item['item'])
                 if result is not None:
+                    result = copy.deepcopy(result)
+                    if '_postman_id' in result: result.pop('_postman_id')
                     return result
             else:
                 if item['name'] == name:
+                    item = copy.deepcopy(item)
+                    if '_postman_id' in item: item.pop('_postman_id')
                     return item
 
 

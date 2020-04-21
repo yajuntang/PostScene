@@ -61,7 +61,7 @@ class PostScene:
         file.write(json.dumps(new_postman_data, indent=4))
 
     @staticmethod
-    def covert(script_path, postman_data_path, scene_dirs='../scene'):
+    def covert(script_path, postman_data_path, scene_dirs='./scene'):
         if script_path.endswith('.yaml'):
             PostScene.generate(script_path, postman_data_path, scene_dirs)
         elif script_path.endswith('.xmind'):

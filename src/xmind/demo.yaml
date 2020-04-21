@@ -1,0 +1,176 @@
+name: demo-scene
+scene:
+- name: 获取30天内订单记录
+  scene:
+  - 登陆:
+      pre:
+        sign:
+          secret: 1850e165f1fc19420f2ba3d3a1a5ffe4
+        set:
+          userName: user
+          password: user123
+          time: $$times
+          onceToken: $$uuid32
+      tests:
+        assert:
+          express:
+            content: $json.data.code == '1'
+            set:
+              token: $json.data.token
+              uid: $json.data.uid
+  - 获取用户信息:
+      pre:
+        sign:
+          secret: 1850e165f1fc19420f2ba3d3a1a5ffe4
+        ref: uid
+      tests:
+        assert:
+          status: 200
+  - 已支付订单列表:
+      pre:
+        sign:
+          secret: 1850e165f1fc19420f2ba3d3a1a5ffe4
+        set:
+          startTime: $$dateFormat($last30Days,'YY-MM-DD 00:00:00')
+          endTime: $$dateFormat($times,'YY-MM-DD hh:mm:ss')
+      tests:
+        assert:
+          status: 200
+- name: 下单流程
+  scene:
+  - 登陆:
+      pre:
+        sign:
+          secret: 1850e165f1fc19420f2ba3d3a1a5ffe4
+        set:
+          userName: user
+          password: user123
+          time: $$times
+          onceToken: $$uuid32
+      tests:
+        assert:
+          express:
+            content: $json.data.code === '1'
+            set:
+              token: $json.data.token
+              uid: $json.data.uid
+  - 通过餐厅名字搜索餐厅:
+      pre:
+        sign:
+          secret: 1850e165f1fc19420f2ba3d3a1a5ffe4
+        set:
+          canteenName: 喜茶
+      tests:
+        assert:
+          expect:
+            content: $json.data.canteenList
+            item: $it.name
+            include: 喜茶
+            set:
+              canteenId: $$find(json.data.canteenList, it.canteenName == '喜茶GO').canteenId
+  - 通过商品名字搜索商品:
+      pre:
+        sign:
+          secret: 1850e165f1fc19420f2ba3d3a1a5ffe4
+        ref: canteenId
+        set:
+          goodsName: 奥利奥千层
+      tests:
+        assert:
+          expect:
+            content: $json.data.goodsList
+            item: $item.name
+            include: 奥利奥千层
+            set:
+              goodsId: $$find(json.data.goodsList, it.goodsName == '奥利奥千层').goodsId
+  - 加入购物车:
+      pre:
+        sign:
+          secret: 1850e165f1fc19420f2ba3d3a1a5ffe4
+        ref: goodsId
+        set:
+          count: 1
+      tests:
+        assert:
+          express:
+            content: $json.code === '1'
+            set:
+              pocketId: $json.data.pocketId
+  - 订单结算:
+      pre:
+        sign:
+          secret: 1850e165f1fc19420f2ba3d3a1a5ffe4
+        ref: pocketId
+      tests:
+        assert:
+          express:
+            content: $json.code === '1'
+            set:
+              orderId: $json.data.orderId
+  - 使用余额结算:
+      pre:
+        sign:
+          secret: 1850e165f1fc19420f2ba3d3a1a5ffe4
+        ref: orderId
+      tests:
+        assert:
+          express: $json.code === '1'
+      next:
+        condition: $json.code === '2'
+        requestName: 未支付订单列表
+  - 已支付订单列表:
+      tests:
+        assert:
+          status: 200
+          expect:
+            content: $json.data.orders
+            item: $item.status
+            eql: 1
+        next:
+          condition: $true
+          requestName: $null
+  - 未支付订单列表:
+      tests:
+        assert:
+          status: 200
+          expect:
+            content: $json.data.orders
+            item: $item.status
+            eql: 0
+- name: 内置函数测试
+  scene:
+  - 通过餐厅名字搜索餐厅:
+      pre:
+        set:
+          token: $$md5(vars.get('uid'))
+          timeS: $$timeS
+          times: $$times
+          dateTimeS: $$timeS('2019-11-11')
+          dateTimes: $$times('2019-11-11')
+          weekStart: $$weekStart
+          weekEnd: $$weekEnd
+          lastWeekStart: $$lastWeekStart
+          lastWeekEnd: $$lastWeekEnd
+          monthStart: $$monthStart
+          monthEnd: $$monthEnd
+          lastMonthStart: $$lastMonthStart
+          lastMonthEnd: $$lastMonthEnd
+          last7DaysStart: $$last7DaysStart
+          last30DaysStart: $$last30DaysStart
+          timeS1: $$dateFormat($timeS,'YY-MM-DD hh:mm:ss')
+          dateTimeS1: $$dateFormat($timeS('2019-11-11'),'YY-MM-DD hh:mm:ss')
+          dateTimes1: $$dateFormat($times('2019-11-11'),'YY-MM-DD hh:mm:ss')
+          weekStart1: $$dateFormat($weekStart,'YY-MM-DD hh:mm:ss')
+          weekEnd1: $$dateFormat($weekEnd,'YY-MM-DD hh:mm:ss')
+          lastWeekStart1: $$dateFormat($lastWeekStart,'YY-MM-DD hh:mm:ss')
+          lastWeekEnd1: $$dateFormat($lastWeekEnd,'YY-MM-DD hh:mm:ss')
+          monthStart1: $$dateFormat($monthStart,'YY-MM-DD hh:mm:ss')
+          monthEnd1: $$dateFormat($monthEnd,'YY-MM-DD hh:mm:ss')
+          lastMonthStart1: $$dateFormat($lastMonthStart,'YY-MM-DD hh:mm:ss')
+          lastMonthEnd1: $$dateFormat($lastMonthEnd,'YY-MM-DD hh:mm:ss')
+          last7DaysStart1: $$dateFormat($last7DaysStart,'YY-MM-DD hh:mm:ss')
+          last30DaysStart1: $$dateFormat($last30DaysStart,'YY-MM-DD hh:mm:ss')
+      tests:
+        assert:
+          status: 200
+          express: $json.data.list.length > 0
