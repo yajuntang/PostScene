@@ -145,6 +145,16 @@ scene:
         - [预期: except](https://gitee.com/tangyajun/PostScene/wikis/%E9%A2%84%E6%9C%9F:%20expect?sort_id=2129323)    
     - [条件跳转: next](https://gitee.com/tangyajun/PostScene/wikis/%E6%9D%A1%E4%BB%B6%E8%B7%B3%E8%BD%AC:%20next?sort_id=2129324)  
     - [保存变量: set](https://gitee.com/tangyajun/PostScene/wikis/%E4%BF%9D%E5%AD%98%E5%8F%98%E9%87%8F:%20set?sort_id=2129315)
+ + **授权: auth**
+    - [apikey](https://gitee.com/tangyajun/PostScene/wikis/apikey?sort_id=2158423)
+    - [bearer](https://gitee.com/tangyajun/PostScene/wikis/bearer?sort_id=2158426)
+    - [basic](https://gitee.com/tangyajun/PostScene/wikis/basic?sort_id=2158425)
+    - [digest](https://gitee.com/tangyajun/PostScene/wikis/digest?sort_id=2158427)
+    - [oauth1](https://gitee.com/tangyajun/PostScene/wikis/oauth1?sort_id=2158430)
+    - [oauth2](https://gitee.com/tangyajun/PostScene/wikis/oauth2?sort_id=2158431)
+    - [hawk](https://gitee.com/tangyajun/PostScene/wikis/hawk?sort_id=2158429)
+    - [awsv4](https://gitee.com/tangyajun/PostScene/wikis/awsv4?sort_id=2158424)
+    - [edgegrid](https://gitee.com/tangyajun/PostScene/wikis/edgegrid?sort_id=2158428)
  + **快捷函数**  
     - [唯一标识: $uuid32](https://gitee.com/tangyajun/PostScene/wikis/%E5%BF%AB%E6%8D%B7%E5%87%BD%E6%95%B0?sort_id=2129309)    
     - [md5加密: $md5](https://gitee.com/tangyajun/PostScene/wikis/%E5%BF%AB%E6%8D%B7%E5%87%BD%E6%95%B0?sort_id=2129309)    

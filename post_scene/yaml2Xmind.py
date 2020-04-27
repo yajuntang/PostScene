@@ -51,7 +51,7 @@ def dict2xmind(dicts, filename, path):
 
 # demo
 # if __name__ == '__main__':
-#     file = open('../yaml/demo.yaml', 'r', encoding='utf-8')
+#     file = open('../src/yaml/demo.yaml', 'r', encoding='utf-8')
 #     yaml = YAML()
 #     script = yaml.load(file)
 #     dict2xmind(script, "demo", path="../")

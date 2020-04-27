@@ -1,6 +1,6 @@
 {
     "info": {
-        "_postman_id": "601ed168-e912-45f8-a1b9-594ac8652783",
+        "_postman_id": "0735fd25-08a7-4463-b1ef-391457d8a13e",
         "name": "demo-scene",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
@@ -22,14 +22,25 @@
                                 }
                             }
                         },
-                        "url": "https://api.server/services/login"
+                        "url": {
+                            "raw": "https://api.server/services/login",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "login"
+                            ]
+                        }
                     },
                     "response": [],
                     "event": [
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "6e233d4d-2058-4380-8a35-561d438003ed",
+                                "id": "5fa86961-cfe8-450f-a144-ad9605930de0",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -45,7 +56,7 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "afcf0008-9ff4-460a-a2a7-bf7ca1781abe",
+                                "id": "e749c398-4b04-408f-8733-ab32f000a1bb",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -88,14 +99,26 @@
                                 }
                             }
                         },
-                        "url": "https://api.server/services/user/get_info"
+                        "url": {
+                            "raw": "https://api.server/services/user/get_info",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "user",
+                                "get_info"
+                            ]
+                        }
                     },
                     "response": [],
                     "event": [
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "8a29f396-a55f-4269-8d5a-defe11e4bdba",
+                                "id": "4ae46c3c-c629-4719-a2a0-49fce868f66a",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -107,7 +130,7 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "246b6892-ced4-4878-a3d4-edfb4256e1e4",
+                                "id": "63f8456c-845b-4539-9873-f75f5802d36c",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -130,14 +153,27 @@
                                 "type": "text"
                             }
                         ],
-                        "url": "https://api.server/services/canteen/orders/paid"
+                        "url": {
+                            "raw": "https://api.server/services/canteen/orders/paid",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "orders",
+                                "paid"
+                            ]
+                        }
                     },
                     "response": [],
                     "event": [
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "d794ff2a-96b7-4951-9c45-94231bb0d6fd",
+                                "id": "512bcd80-d69c-44f9-94e3-b39ba828f1ea",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -151,7 +187,7 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "b67fff77-b6af-4eca-87a8-4691eeef2e97",
+                                "id": "6949e057-e179-4d82-a960-670eabe33997",
                                 "type": "text/javascript",
                                 "exec": []
                             }
@@ -177,14 +213,25 @@
                                 }
                             }
                         },
-                        "url": "https://api.server/services/login"
+                        "url": {
+                            "raw": "https://api.server/services/login",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "login"
+                            ]
+                        }
                     },
                     "response": [],
                     "event": [
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "87caec66-9ade-48b5-8572-ed3a15f4360f",
+                                "id": "c47ee67b-a2bd-44f2-a565-d1b2c3805f97",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -200,7 +247,7 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "1fe6962a-3c25-453b-93e0-4583dbe46777",
+                                "id": "bc7e5092-d728-4b1b-97db-8adeeb652d39",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -243,14 +290,26 @@
                                 }
                             }
                         },
-                        "url": "https://api.server/services/canteen/search_by_name"
+                        "url": {
+                            "raw": "https://api.server/services/canteen/search_by_name",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "search_by_name"
+                            ]
+                        }
                     },
                     "response": [],
                     "event": [
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "660d6fd9-ed5d-4e1a-b316-936d3ee93125",
+                                "id": "527e5beb-0dde-4900-a702-866f2dc34fa9",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -263,7 +322,7 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "0ddc6af2-b3b3-4360-a45b-f1d312f208f8",
+                                "id": "6fa4b1b2-629b-425b-bf8e-82a480861043",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -311,14 +370,27 @@
                                 }
                             }
                         },
-                        "url": "https://api.server/services/canteen/goods/search_by_name"
+                        "url": {
+                            "raw": "https://api.server/services/canteen/goods/search_by_name",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "goods",
+                                "search_by_name"
+                            ]
+                        }
                     },
                     "response": [],
                     "event": [
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "84f90fd6-6007-4f10-b4ad-1cf137e4d1bd",
+                                "id": "fc94c6aa-fb71-4c03-8401-cf92708b7c1e",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -331,7 +403,7 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "1ee026f1-7a2a-4fa8-87b6-2e001ebf6d74",
+                                "id": "98799582-d154-4e77-b2c5-24ea660f365a",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -389,7 +461,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "6dcf94b8-1ef7-476e-97a5-aac17c702689",
+                                "id": "d1d94c47-da97-4baa-8175-4e353b6b82bb",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -402,7 +474,7 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "98268143-4885-4684-ba5f-da753e8d08a0",
+                                "id": "e4ce579a-8c53-483c-be09-a22e982b3646",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -460,7 +532,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "9247eab4-d810-47c6-9984-62b926c49e6a",
+                                "id": "1c366de5-0f39-45f3-b46e-0a83ab017ef5",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -472,7 +544,7 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "7998da37-ed01-410b-a4a4-92f7b8994f5c",
+                                "id": "2dc1b40a-872e-4885-a073-b11785d16544",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -530,7 +602,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "15f7aab9-66f7-4f12-a3e6-20ad0e7619a3",
+                                "id": "786b28fb-8afc-4a0b-b7e5-0b7aede8e279",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -542,7 +614,7 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "9da16f4c-c489-4d16-bf71-64c0c4bdd4e3",
+                                "id": "6462f00a-6ddd-4e71-bc54-c7ec6d9cdb4b",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -565,14 +637,27 @@
                                 "type": "text"
                             }
                         ],
-                        "url": "https://api.server/services/canteen/orders/paid"
+                        "url": {
+                            "raw": "https://api.server/services/canteen/orders/paid",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "orders",
+                                "paid"
+                            ]
+                        }
                     },
                     "response": [],
                     "event": [
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "fff3f0bb-7513-4ac8-90c9-d7b63ec06212",
+                                "id": "0e664498-e92a-4b46-b399-ccd1c3ff308c",
                                 "type": "text/javascript",
                                 "exec": []
                             }
@@ -580,7 +665,7 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "97892eb7-f884-4712-b0ab-afbbd886402d",
+                                "id": "2f2282f1-3df8-406f-8d02-95a9e13806ba",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -605,14 +690,27 @@
                                 "value": "{{token}}"
                             }
                         ],
-                        "url": "https://api.server/services/canteen/orders/no_pay"
+                        "url": {
+                            "raw": "https://api.server/services/canteen/orders/no_pay",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "orders",
+                                "no_pay"
+                            ]
+                        }
                     },
                     "response": [],
                     "event": [
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "83965f5e-a566-48b6-a008-4a5f3e7763b1",
+                                "id": "561abeae-cfae-435c-987a-856740d4f8b1",
                                 "type": "text/javascript",
                                 "exec": []
                             }
@@ -620,7 +718,7 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "8925b7cf-342c-4a26-89ac-ab3dcca4839a",
+                                "id": "0d701b34-895a-48e8-96fd-4243d784d0f0",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -804,14 +902,26 @@
                                 }
                             }
                         },
-                        "url": "https://api.server/services/canteen/search_by_name"
+                        "url": {
+                            "raw": "https://api.server/services/canteen/search_by_name",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "search_by_name"
+                            ]
+                        }
                     },
                     "response": [],
                     "event": [
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "1b70a74d-8373-439d-95c9-2d011d1cc5b2",
+                                "id": "84e6c72c-6eae-49b7-ad24-ed0fa9dcb877",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -851,7 +961,7 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "bef03b19-a938-423e-9c54-55b54a2ed0ca",
+                                "id": "f66d914a-0f4f-4b0f-b50e-f92fcb7356d8",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -866,6 +976,827 @@
                     ]
                 }
             ]
+        },
+        {
+            "name": "\u6743\u9650\u8ba4\u8bc1",
+            "item": [
+                {
+                    "name": "\u901a\u8fc7\u9910\u5385\u540d\u5b57\u641c\u7d22\u9910\u5385",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "token",
+                                "value": "{{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "canteenName",
+                                    "value": "abc",
+                                    "type": "text"
+                                }
+                            ],
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "https://api.server/services/canteen/search_by_name",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "search_by_name"
+                            ]
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "1850e165f1fc19420f2ba3d3a1a5ffe4",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "id": "d73ce9c2-a6b3-426c-8190-fd2a14787e44",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "vars = pm.variables;",
+                                    ""
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "d094912c-3d54-463b-9cc5-e2f95011157e",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
+                                    "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "\u901a\u8fc7\u9910\u5385\u540d\u5b57\u641c\u7d22\u9910\u5385",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "token",
+                                "value": "{{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "canteenName",
+                                    "value": "abc",
+                                    "type": "text"
+                                }
+                            ],
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "https://api.server/services/canteen/search_by_name",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "search_by_name"
+                            ]
+                        },
+                        "auth": {
+                            "type": "apikey",
+                            "apikey": [
+                                {
+                                    "key": "in",
+                                    "value": "header",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "key",
+                                    "value": "api_key",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "value",
+                                    "value": "1850e165f1fc19420f2ba3d3a1a5ffe4",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "id": "045201d2-19a6-4dee-92b0-5860a40090e2",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "vars = pm.variables;",
+                                    ""
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "31fe292c-ebac-45bb-8146-73b6962c718d",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
+                                    "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "\u901a\u8fc7\u9910\u5385\u540d\u5b57\u641c\u7d22\u9910\u5385",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "token",
+                                "value": "{{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "canteenName",
+                                    "value": "abc",
+                                    "type": "text"
+                                }
+                            ],
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "https://api.server/services/canteen/search_by_name",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "search_by_name"
+                            ]
+                        },
+                        "auth": {
+                            "type": "basic",
+                            "basic": [
+                                {
+                                    "key": "username",
+                                    "value": "account",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "password",
+                                    "value": "my_password",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "id": "29f843e6-1f86-44ab-b595-09ed00162483",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "vars = pm.variables;",
+                                    ""
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "88296d9e-17b6-4275-8e9b-99366cc7161f",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
+                                    "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "\u901a\u8fc7\u9910\u5385\u540d\u5b57\u641c\u7d22\u9910\u5385",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "token",
+                                "value": "{{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "canteenName",
+                                    "value": "abc",
+                                    "type": "text"
+                                }
+                            ],
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "https://api.server/services/canteen/search_by_name",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "search_by_name"
+                            ]
+                        },
+                        "auth": {
+                            "type": "digest",
+                            "digest": [
+                                {
+                                    "key": "disableRetryRequest",
+                                    "value": false,
+                                    "type": "boolean"
+                                },
+                                {
+                                    "key": "username",
+                                    "value": "account",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "password",
+                                    "value": "my_password",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "id": "7369e072-e79b-4570-9f76-3fd38bfae391",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "vars = pm.variables;",
+                                    ""
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "6a28b13e-c514-4308-bb83-02c534015296",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
+                                    "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "\u901a\u8fc7\u9910\u5385\u540d\u5b57\u641c\u7d22\u9910\u5385",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "token",
+                                "value": "{{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "canteenName",
+                                    "value": "abc",
+                                    "type": "text"
+                                }
+                            ],
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "https://api.server/services/canteen/search_by_name",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "search_by_name"
+                            ]
+                        },
+                        "auth": {
+                            "type": "oauth1",
+                            "oauth1": [
+                                {
+                                    "key": "addParamsToHeader",
+                                    "value": false,
+                                    "type": "boolean"
+                                },
+                                {
+                                    "key": "addEmptyParamsToSign",
+                                    "value": false,
+                                    "type": "boolean"
+                                },
+                                {
+                                    "key": "consumerKey",
+                                    "value": "1850e165f1fc19420f2ba3d3a1a5ffe4",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "consumerSecret",
+                                    "value": "1850e165f1fc19420f2ba3d3a1a5ffe4",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "token",
+                                    "value": "1850e165f1fc19420f2ba3d3a1a5ffe4",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "tokenSecret",
+                                    "value": "1850e165f1fc19420f2ba3d3a1a5ffe4",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "id": "c867c9a1-9747-4def-9a78-2b211862094b",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "vars = pm.variables;",
+                                    ""
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "97f97b63-cb58-4cb2-a376-56a6f56e7fc9",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
+                                    "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "\u901a\u8fc7\u9910\u5385\u540d\u5b57\u641c\u7d22\u9910\u5385",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "token",
+                                "value": "{{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "canteenName",
+                                    "value": "abc",
+                                    "type": "text"
+                                }
+                            ],
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "https://api.server/services/canteen/search_by_name",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "search_by_name"
+                            ]
+                        },
+                        "auth": {
+                            "type": "oauth2",
+                            "oauth2": [
+                                {
+                                    "key": "addTokenTo",
+                                    "value": "header",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "accessToken",
+                                    "value": "{{token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "id": "5387ea20-7e13-4e70-9e87-949bb7f530f7",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "vars = pm.variables;",
+                                    ""
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "2502fd1c-cd08-4212-a0fb-f962dec940a1",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
+                                    "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "\u901a\u8fc7\u9910\u5385\u540d\u5b57\u641c\u7d22\u9910\u5385",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "token",
+                                "value": "{{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "canteenName",
+                                    "value": "abc",
+                                    "type": "text"
+                                }
+                            ],
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "https://api.server/services/canteen/search_by_name",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "search_by_name"
+                            ]
+                        },
+                        "auth": {
+                            "type": "hawk",
+                            "hawk": [
+                                {
+                                    "key": "includePayloadHash",
+                                    "value": false,
+                                    "type": "boolean"
+                                },
+                                {
+                                    "key": "algorithm",
+                                    "value": "sha256",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "authId",
+                                    "value": "{{authId}}",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "authKey",
+                                    "value": "1850e165f1fc19420f2ba3d3a1a5ffe4",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "id": "8d798fd3-7552-4880-8e92-15672b425196",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "vars = pm.variables;",
+                                    ""
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "9a9093de-8330-4574-b7de-d71408f3cece",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
+                                    "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "\u901a\u8fc7\u9910\u5385\u540d\u5b57\u641c\u7d22\u9910\u5385",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "token",
+                                "value": "{{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "canteenName",
+                                    "value": "abc",
+                                    "type": "text"
+                                }
+                            ],
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "https://api.server/services/canteen/search_by_name",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "search_by_name"
+                            ]
+                        },
+                        "auth": {
+                            "type": "awsv4",
+                            "awsv4": [
+                                {
+                                    "key": "accessKey",
+                                    "value": "1850e165f1fc19420f2ba3d3a1a5ffe4",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "secretKey",
+                                    "value": "1850e165f1fc19420f2ba3d3a1a5ffe4",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "id": "7cffb030-a5f7-4f52-8678-03fbde8c730e",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "vars = pm.variables;",
+                                    ""
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "6ea19ba2-0e33-435c-b9b3-e0d76cd6513c",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
+                                    "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "\u901a\u8fc7\u9910\u5385\u540d\u5b57\u641c\u7d22\u9910\u5385",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "token",
+                                "value": "{{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "canteenName",
+                                    "value": "abc",
+                                    "type": "text"
+                                }
+                            ],
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "https://api.server/services/canteen/search_by_name",
+                            "protocol": "https",
+                            "host": [
+                                "api",
+                                "server"
+                            ],
+                            "path": [
+                                "services",
+                                "canteen",
+                                "search_by_name"
+                            ]
+                        },
+                        "auth": {
+                            "type": "edgegrid",
+                            "edgegrid": [
+                                {
+                                    "key": "clientToken",
+                                    "value": "1850e165f1fc19420f2ba3d3a1a5ffe4",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "clientSecret",
+                                    "value": "1850e165f1fc19420f2ba3d3a1a5ffe4",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "accessToken",
+                                    "value": "1850e165f1fc19420f2ba3d3a1a5ffe4",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "id": "a59ce6a4-1a17-4be5-93bb-6c8ace03c824",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "vars = pm.variables;",
+                                    ""
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "a4db1735-6c63-4d32-8eaa-5b3e9d72a23f",
+                                "type": "text/javascript",
+                                "exec": [
+                                    "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
+                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
+                                    "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": [
+                    {
+                        "key": "token",
+                        "value": "1850e165f1fc19420f2ba3d3a1a5ffe4",
+                        "type": "string"
+                    }
+                ]
+            }
         }
-    ]
+    ],
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "token",
+                "value": "1850e165f1fc19420f2ba3d3a1a5ffe4",
+                "type": "string"
+            }
+        ]
+    }
 }

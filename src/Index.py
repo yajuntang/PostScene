@@ -8,6 +8,6 @@ api_document_url = 'https://www.getpostman.com/collections/08ab1192c204d8df4a48'
 
 # PostScene.covert(yaml_path, api_document_path,scene_dirs='./scene')
 # PostScene.covert(xmind_path, api_document_path,scene_dirs='./scene')
-PostScene.covert(yaml_path, api_document_url,scene_dirs='./scene')
+PostScene.covert(yaml_path, api_document_path,scene_dirs='./scene')
 
 

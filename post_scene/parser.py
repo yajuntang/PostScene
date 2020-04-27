@@ -1,6 +1,8 @@
 import copy
 import json
+from typing import List
 
+from post_scene import auth_parser
 from post_scene.creator import SetMethod, AssertMethod
 from post_scene.models import Models
 
@@ -8,7 +10,7 @@ set_mapping = {
     'set-global': 'set_global_var',  # 设置全局变量的值
     'set-env': 'set_env_var',  # 设置环境变量的值
     'set-collect': 'set_collect_var',  # 设置集合变量的值
-    'set': 'set_var',  # 设置变量值
+    'set': 'set_var',               # 设置变量值
     'unset-global': 'unset_global_var',
     'unset-env': 'unset_env_var',
     'unset-collect': 'unset_collect_var',
@@ -89,6 +91,29 @@ class Utils:
         return request_item
 
     @staticmethod
+    def replace_auth_data(request,scene_auth):
+        if len(scene_auth) == 0:
+            return
+        if 'auth' not in request:
+            request['auth'] = scene_auth
+            return
+        request_auth = request['auth']
+        if request_auth['type'] != scene_auth['type']:
+            request['auth'] = scene_auth
+            return
+        auth:List = request_auth[request_auth['type']]
+        scene_auth = scene_auth[scene_auth['type']]
+        for scene_auth_item in scene_auth:
+             found = False
+             for item in auth:
+                 if item['key'] == scene_auth_item['key']:
+                     item['value'] = scene_auth_item['value']
+                     found = True
+             if found is False:
+                auth.append(scene_auth_item)
+
+
+    @staticmethod
     def parse_json_params(json_data, name: str, value):
         curr_name = name.strip()
         next_name = None
@@ -129,6 +154,32 @@ class Utils:
 class Parse:
 
     @staticmethod
+    def parse_sign(pre, params_name):
+        if 'sign' in pre:
+            sign = pre['sign']
+            secret = sign['secret'] if 'secret' in sign else '$vars.get("api_sign_secret")'
+            secret_name = sign['secretName'] if 'secretName' in sign else 'secret'
+            sign_key = sign['signName'] if 'signName' in sign else 'sign'
+            script = Models.sign.format(Utils.format_value(secret), sign_key, secret_name)
+            params_name.append({sign_key: sign_key})
+            return script
+        return ''
+
+    @staticmethod
+    def parse_ref(pre, params_name):
+        if 'ref' in pre:
+            value = pre['ref']
+            if isinstance(value, dict):
+                for name in value:
+                    params_name.append({name: value[name]})
+            else:
+                params_name.extend(map(lambda x: {x: x}, value.strip().split(",")))
+
+    @staticmethod
+    def parse_auth(pre,auth_bean):
+        auth_parser.parse_auth(pre, auth_bean)
+
+    @staticmethod
     def parse_pre(pre):
         script = []
         params_name = []
@@ -148,6 +199,25 @@ class Parse:
             elif key == 'code':
                 script.append(pre[key])
         return script, params_name
+
+
+
+    @staticmethod
+    def parse_next(next_data):
+        scripts = []
+        if isinstance(next_data, dict):
+            scripts.append(Models.next_request.format(Utils.format_value(next_data['condition']),
+                                                      Utils.format_value(next_data['requestName']),
+                                                      Parse.parse_set_from_assert(next_data)))
+
+        elif isinstance(next_data, list):
+            for item in next_data:
+                case = item['case']
+                scripts.append(
+                    Models.next_request.format(Utils.format_value(case['condition']),
+                                               Utils.format_value(case['requestName']),
+                                               Parse.parse_set_from_assert(next_data)))
+        return scripts
 
     @staticmethod
     def parse_set_from_assert(item):
@@ -261,23 +331,6 @@ class Parse:
         return script
 
     @staticmethod
-    def parse_next(next_data):
-        scripts = []
-        if isinstance(next_data, dict):
-            scripts.append(Models.next_request.format(Utils.format_value(next_data['condition']),
-                                                      Utils.format_value(next_data['requestName']),
-                                                      Parse.parse_set_from_assert(next_data)))
-
-        elif isinstance(next_data, list):
-            for item in next_data:
-                case = item['case']
-                scripts.append(
-                    Models.next_request.format(Utils.format_value(case['condition']),
-                                               Utils.format_value(case['requestName']),
-                                               Parse.parse_set_from_assert(next_data)))
-        return scripts
-
-    @staticmethod
     def parse_tests(tests):
         script = []
         for key in tests:
@@ -302,27 +355,7 @@ class Parse:
                                                              Utils.format_value(tests[key][name])))
         return script
 
-    @staticmethod
-    def parse_sign(pre, params_name):
-        if 'sign' in pre:
-            sign = pre['sign']
-            secret = sign['secret'] if 'secret' in sign else '$vars.get("api_sign_secret")'
-            secret_name = sign['secretName'] if 'secretName' in sign else 'secret'
-            sign_key = sign['signName'] if 'signName' in sign else 'sign'
-            script = Models.sign.format(Utils.format_value(secret), sign_key, secret_name)
-            params_name.append({sign_key: sign_key})
-            return script
-        return ''
 
-    @staticmethod
-    def parse_def(pre, params_name):
-        if 'ref' in pre:
-            value = pre['ref']
-            if isinstance(value, dict):
-                for name in value:
-                    params_name.append({name: value[name]})
-            else:
-                params_name.extend(map(lambda x: {x: x}, value.strip().split(",")))
 
     @staticmethod
     def parse_scene(scenes_val):
@@ -331,8 +364,10 @@ class Parse:
             if 'name' in item:
                 folder = {
                     'name': item['name'],
+                    'auth': {},
                     'scene': Parse.parse_scene(item['scene'])
                 }
+                Parse.parse_auth(item,folder['auth'])
                 scenes_of_processed.append(folder)
             else:
                 for key in item:
@@ -340,11 +375,13 @@ class Parse:
                     pre_scripts = []
                     scripts = []
                     params_name = []
+                    auth = {}
                     scene_bean = {'name': key, 'pre-scripts': pre_scripts, 'scripts': scripts,
-                                  'params-name': params_name}
+                                  'params-name': params_name,'auth':auth}
                     scenes_of_processed.append(scene_bean)
                     if 'pre' in scene_data:
-                        Parse.parse_def(scene_data['pre'], params_name)
+                        Parse.parse_auth(scene_data['pre'],auth)
+                        Parse.parse_ref(scene_data['pre'], params_name)
                         pre_parse_data = Parse.parse_pre(scene_data['pre'])
                         pre_scripts.extend(pre_parse_data[0])
                         pre_scripts.append(Parse.parse_sign(scene_data['pre'], params_name))

@@ -26,11 +26,14 @@ class PostScene:
                     'name': scene['name'],
                     'item': PostScene.package(scene['scene'], postman_data)
                 }
+                if len(scene['auth']) > 0:
+                    folder['auth'] = scene['auth']
                 new_items.append(folder)
             else:
                 postman_item = Utils.find_postman_item_by_name(scene['name'], postman_data['item'])
                 if postman_item is not None:
                     postman_item['request'] = Utils.replace_params_name(postman_item['request'], scene['params-name'])
+                    Utils.replace_auth_data(postman_item['request'],scene['auth'])
                     postman_item['event'] = []
                     if 'pre-scripts' in scene:
                         postman_item['event'].append(PostmanJson.create_script(scene['pre-scripts']))
@@ -51,6 +54,10 @@ class PostScene:
         postman_items = []
         new_postman_data = {"info": PostmanJson.create_info(script['name']), 'item': postman_items}
 
+        if 'auth' in script:
+            new_postman_data['auth'] = {}
+            Parse.parse_auth(script,new_postman_data['auth'])
+
         if 'variable' in postman_data:
             new_postman_data['variable'] = postman_data['variable']
 
@@ -59,6 +66,7 @@ class PostScene:
         os.makedirs(scene_dirs, exist_ok=True)
         file = open(os.path.join(scene_dirs, '{0}.json'.format(script['name'])), 'w+')
         file.write(json.dumps(new_postman_data, indent=4))
+
 
     @staticmethod
     def covert(script_path, postman_data_path, scene_dirs='./scene'):

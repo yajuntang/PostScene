@@ -176,6 +176,101 @@ scene:
               - status: 200
               - express: $json.data.code === '2'
               - express: $json.data.list.length > 0
+  - name: 授权
+    scene:
+      - 通过餐厅名字搜索餐厅:
+          pre:
+            auth:
+              bearer: 1850e165f1fc19420f2ba3d3a1a5ffe4
+          tests:
+            assert:
+              status: 200
+
+      - 通过餐厅名字搜索餐厅:
+          pre:
+            auth:
+              apikey:
+                Key: api_key
+                Value: 1850e165f1fc19420f2ba3d3a1a5ffe4
+          tests:
+            assert:
+              status: 200
+
+      - 通过餐厅名字搜索餐厅:
+          pre:
+            auth:
+              basic:
+                Username: account
+                Password: my_password
+          tests:
+            assert:
+              status: 200
+
+      - 通过餐厅名字搜索餐厅:
+          pre:
+            auth:
+              digest:
+                Username: account
+                Password: my_password
+          tests:
+            assert:
+              status: 200
+
+      - 通过餐厅名字搜索餐厅:
+          pre:
+            auth:
+              oauth1:
+                ConsumerKey: 1850e165f1fc19420f2ba3d3a1a5ffe4
+                ConsumerSecret: 1850e165f1fc19420f2ba3d3a1a5ffe4
+                AccessToken: 1850e165f1fc19420f2ba3d3a1a5ffe4
+                TokenSecret: 1850e165f1fc19420f2ba3d3a1a5ffe4
+          tests:
+            assert:
+              status: 200
+
+      - 通过餐厅名字搜索餐厅:
+          pre:
+            auth:
+              oauth2:
+                ref: token   #也可以引用变量
+          tests:
+            assert:
+              status: 200
+
+      - 通过餐厅名字搜索餐厅:
+          pre:
+            auth:
+              hawk:
+                HawkAuthID:
+                    ref: authId   #也可以引用变量
+                HawkAuthKey: 1850e165f1fc19420f2ba3d3a1a5ffe4
+          tests:
+            assert:
+              status: 200
+
+      - 通过餐厅名字搜索餐厅:
+          pre:
+            auth:
+              awsv4:
+                AccessKey: 1850e165f1fc19420f2ba3d3a1a5ffe4
+                SecretKey: 1850e165f1fc19420f2ba3d3a1a5ffe4
+          tests:
+            assert:
+              status: 200
+
+      - 通过餐厅名字搜索餐厅:
+          pre:
+            auth:
+              edgegrid:
+                AccessToken: 1850e165f1fc19420f2ba3d3a1a5ffe4
+                ClientToken: 1850e165f1fc19420f2ba3d3a1a5ffe4
+                ClientSecret: 1850e165f1fc19420f2ba3d3a1a5ffe4
+          tests:
+            assert:
+              status: 200
+
+
+
 
 
 
