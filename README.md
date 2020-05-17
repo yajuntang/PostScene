@@ -3,10 +3,16 @@
 
 **使用Xmind或者Yaml 设计 postman 自动化场景**
 
-**背景**: postman是一个比较轻量级的接口测试工具，在单个接口的测试表现优秀。在批量测试接口方面则提供了Runner Collections这种方式，虽然可以用来做流程测试，但在管理上不是很方便。例如：在postman建立一个collection作为接口文档，然后再建立另外一个collection作为场景测试，接着从接口文档的collection中挑选接口，并复制到场景测试的collection中，而且可能在不同的场景都共用同一个接口，这种方式是听不错的，只是当接口的版本升级之后，需要在场景中找出所有对应的接口进行修改，这样在管理上会比较麻烦。
+#### 引言 
+postman是一个比较轻量级的接口测试工具，在单个接口的测试表现优秀。在批量测试接口方面则提供了Runner Collections这种方式，虽然可以用来做流程测试，但在管理上不是很方便。例如：在postman建立一个collection作为接口文档，然后再建立另外一个collection作为场景测试，接着从接口文档的collection中挑选接口，并复制到场景测试的collection中，而且可能在不同的场景都共用同一个接口，这种方式是听不错的，只是当接口的版本升级之后，需要在场景中找出所有对应的接口进行修改，这样在管理上会比较麻烦。
 
- **思想**: 这个工具根据Xmind或Yaml所写的场景流程，从接口文档的collection中生成一个场景测试的collection，这样即使版本升级，只需要重新生成一次即可，相当方便，同时也提供了一些方便的设参方式和断言。
+#### 概念
+这个工具根据Xmind或Yaml所写的场景流程，从接口文档的collection中生成一个场景测试的collection，这样即使版本升级，只需要重新生成一次即可，相当方便，同时也提供了一些方便的设参方式和断言。
 
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0517/171141_3a0a3674_5050702.png "屏幕截图.png")
+
+
+### 能做什么
 1.  **管理方便** 。只需要管理接口文档的collection和Xmind/Yaml脚本。
 2.  **场景流程更直观** 。在Xmind/Yaml上可以直观的看到整个流程，在细节上也可以看到每个接口的参数定义，以及断言内容。
 3.  **代码编写简化** 。在测试行业中，普遍都是代码能力比较差，虽然测试不需要特别强的代码编写能力，postman在Tests界面中也提供了一些快捷片段，但是还是不足够简化，而且也不全面，比如对请求的参数进行签名。
@@ -18,12 +24,27 @@
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0420/111447_678b9ab8_5050702.png "屏幕截图.png")
 
 
-### 安装
+
+### 如何上手
 
 使用 `pip` 安装PostScene 
 
 ```
 pip install -U PostScene
+```
+#### 调用
+```python
+from post_scene.post_scene import PostScene
+
+yaml_path = './yaml/demo.yaml'  # 脚本文件的路径
+xmind_path = './xmind/demo.xmind'  # 脚本文件的路径
+api_document_path = './api_document/demo.postman_collection.json'  # postman json data 文件的路径
+api_document_url = 'https://www.getpostman.com/collections/马赛克马赛克马赛克马赛克'  # 也可以使用Postman的share link
+
+
+# PostScene.covert(yaml_path, api_document_path,scene_dirs='./scene')
+# PostScene.covert(xmind_path, api_document_path,scene_dirs='./scene')
+PostScene.covert(yaml_path, api_document_path,scene_dirs='./scene')
 ```
 
 
