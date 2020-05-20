@@ -113,5 +113,5 @@ def parse_auth(pre, auth_bean):
                     auth_bean[key] = auth_items
                     auth = pre['auth'][key]
                     parse_item(auth, key, auth_items)
-        elif pre['auth'] in ['None', 'none', 'null', 'no', 'No', 'false', 'False']:
+        elif pre['auth'] in ['None', 'none', 'null', 'no', 'No', 'false', 'False','noauth']:
             auth_bean['type'] = 'noauth'
