@@ -153,23 +153,23 @@ scene:
 ### 脚本语法标签
 
  + **请求前: pre**  
-    - [参数设置变量: set](https://gitee.com/tangyajun/PostScene/wikis/%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE%E5%8F%98%E9%87%8F:%20set?sort_id=2129313)   
-    - [参数引用变量: ref](https://gitee.com/tangyajun/PostScene/wikis/%E5%8F%82%E6%95%B0%E5%BC%95%E7%94%A8%E5%8F%98%E9%87%8F:%20ref?sort_id=2129311)      
-    - [参数签名: sign](https://gitee.com/tangyajun/PostScene/wikis/%E5%8F%82%E6%95%B0%E7%AD%BE%E5%90%8D:%20sign?sort_id=2129312)      
+    - [参数设置变量: set](https://gitee.com/tangyajun/PostScene/wikis/%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE%E5%8F%98%E9%87%8F:%20set?sort_id=2158435)   
+    - [参数引用变量: ref](https://gitee.com/tangyajun/PostScene/wikis/%E5%8F%82%E6%95%B0%E5%BC%95%E7%94%A8%E5%8F%98%E9%87%8F:%20ref?sort_id=2158433)      
+    - [参数签名: sign](https://gitee.com/tangyajun/PostScene/wikis/%E5%8F%82%E6%95%B0%E7%AD%BE%E5%90%8D:%20sign?sort_id=2158434)      
  + **请求后: tests**  
     - 断言: assert  
-        - [状态: status](https://gitee.com/tangyajun/PostScene/wikis/%E7%8A%B6%E6%80%81:%20status?sort_id=2129321)    
-        - [是: tobe](https://gitee.com/tangyajun/PostScene/wikis/%E6%98%AF:%20tobe?sort_id=2129318)    
-        - [不是: notTobe](https://gitee.com/tangyajun/PostScene/wikis/%E4%B8%8D%E6%98%AF:%20notTobe?sort_id=2129317)    
-        - [有: tohave](https://gitee.com/tangyajun/PostScene/wikis/%E6%9C%89:%20tohave?sort_id=2129319)    
-        - [没有: notTohave](https://gitee.com/tangyajun/PostScene/wikis/%E6%B2%A1%E6%9C%89:%20notTohave?sort_id=2129320)    
-        - [表达式: express](https://gitee.com/tangyajun/PostScene/wikis/%E8%A1%A8%E8%BE%BE%E5%BC%8F:%20express?sort_id=2129322)    
-        - [预期: except](https://gitee.com/tangyajun/PostScene/wikis/%E9%A2%84%E6%9C%9F:%20expect?sort_id=2129323)    
-    - [条件跳转: next](https://gitee.com/tangyajun/PostScene/wikis/%E6%9D%A1%E4%BB%B6%E8%B7%B3%E8%BD%AC:%20next?sort_id=2129324)  
-    - [保存变量: set](https://gitee.com/tangyajun/PostScene/wikis/%E4%BF%9D%E5%AD%98%E5%8F%98%E9%87%8F:%20set?sort_id=2129315)
+        - [状态: status](https://gitee.com/tangyajun/PostScene/wikis/%E7%8A%B6%E6%80%81:%20status?sort_id=2158444)    
+        - [是: tobe](https://gitee.com/tangyajun/PostScene/wikis/%E6%98%AF:%20tobe?sort_id=2158441)    
+        - [不是: notTobe](https://gitee.com/tangyajun/PostScene/wikis/%E4%B8%8D%E6%98%AF:%20notTobe?sort_id=2158440)    
+        - [有: tohave](https://gitee.com/tangyajun/PostScene/wikis/%E6%9C%89:%20tohave?sort_id=2158442)    
+        - [没有: notTohave](https://gitee.com/tangyajun/PostScene/wikis/%E6%B2%A1%E6%9C%89:%20notTohave?sort_id=2158443)    
+        - [表达式: express](https://gitee.com/tangyajun/PostScene/wikis/%E8%A1%A8%E8%BE%BE%E5%BC%8F:%20express?sort_id=2158445)    
+        - [预期: except](https://gitee.com/tangyajun/PostScene/wikis/%E9%A2%84%E6%9C%9F:%20expect?sort_id=2158446)    
+    - [条件跳转: next](https://gitee.com/tangyajun/PostScene/wikis/%E6%9D%A1%E4%BB%B6%E8%B7%B3%E8%BD%AC:%20next?sort_id=2158447)  
+    - [保存变量: set](https://gitee.com/tangyajun/PostScene/wikis/%E4%BF%9D%E5%AD%98%E5%8F%98%E9%87%8F:%20set?sort_id=2158437)
  + **授权: auth**
-    - [apikey](https://gitee.com/tangyajun/PostScene/wikis/apikey?sort_id=2158423)
     - [bearer](https://gitee.com/tangyajun/PostScene/wikis/bearer?sort_id=2158426)
+    - [apikey](https://gitee.com/tangyajun/PostScene/wikis/apikey?sort_id=2158423)
     - [basic](https://gitee.com/tangyajun/PostScene/wikis/basic?sort_id=2158425)
     - [digest](https://gitee.com/tangyajun/PostScene/wikis/digest?sort_id=2158427)
     - [oauth1](https://gitee.com/tangyajun/PostScene/wikis/oauth1?sort_id=2158430)
