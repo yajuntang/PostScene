@@ -4,7 +4,7 @@ from post_scene.models import Models
 class BuiltFunction:
     @staticmethod
     def smart_split(s: str, delimiter: str = ','):
-        """感知括号层级的智能分割，支持嵌套函数参数"""
+        """感知括号深度的参数分割，支持嵌套函数"""
         parts = []
         bracket_level = 0
         current_part = []
@@ -19,7 +19,7 @@ class BuiltFunction:
             else:
                 current_part.append(char)
         parts.append("".join(current_part).strip())
-        return parts
+        return [p for p in parts if p]
 
     @staticmethod
     def parse_built_function(value: str):
@@ -39,10 +39,9 @@ class BuiltFunction:
         function_name = function_call[1:open_idx]
         raw_params = function_call[open_idx + 1:-1]
 
-        # 递归解析参数并使用智能分割
-        params = [BuiltFunction.parse_built_function(p) for p in BuiltFunction.smart_split(raw_params) if p]
+        # 递归解析参数
+        params = [BuiltFunction.parse_built_function(p) for p in BuiltFunction.smart_split(raw_params)]
 
-        # 函数映射字典
         func_map = {
             'find': lambda p, f: Models.check_find.format(p[0], p[1], f),
             'filter': lambda p, f: Models.check_filter.format(p[0], p[1],
@@ -60,7 +59,7 @@ class BuiltFunction:
 
     @staticmethod
     def get_last_paren_idx(value):
-        """精确定位最外层右括号索引"""
+        """精确定位外层括号索引"""
         stack = []
         for i, char in enumerate(value):
             if char == '(':

@@ -1,8 +1,8 @@
 import json
 import logging
 from pathlib import Path
-import requests
 from ruamel.yaml import YAML
+import requests
 from post_scene.Xmind2Yaml import xmind2Yaml
 from post_scene.creator import PostmanJson
 from post_scene.parser import Utils, Parse
@@ -39,7 +39,7 @@ class PostScene:
             else:
                 item = Utils.find_postman_item_by_name(scene['name'], postman_data['item'])
                 if item:
-                    # 使用深拷贝避免修改原始 postman_data
+                    # 使用深拷贝确保数据独立性
                     target = json.loads(json.dumps(item))
                     target['request'] = Utils.replace_params_name(target['request'], scene['params-name'])
                     Utils.replace_auth_data(target['request'], scene['auth'])
@@ -53,7 +53,7 @@ class PostScene:
 
     @staticmethod
     def generate(yaml_path, postman_data_path, scene_dirs='../scene'):
-        """执行 YAML 到 Postman JSON 的生成"""
+        """执行生成流程"""
         with open(yaml_path, 'r', encoding='utf-8') as f:
             script = YAML().load(f)
 
@@ -79,3 +79,13 @@ class PostScene:
 
         with open(output_file, 'w', encoding='utf-8') as f:
             json.dump(new_collection, f, indent=4, ensure_ascii=False)
+
+    @staticmethod
+    def covert(script_path, postman_data_path, scene_dirs='./scene'):
+        """统一转换入口"""
+        path_obj = Path(script_path)
+        if script_path.endswith('.yaml'):
+            PostScene.generate(script_path, postman_data_path, scene_dirs)
+        elif script_path.endswith('.xmind'):
+            xmind2Yaml(str(path_obj.parent), path_obj.stem)
+            PostScene.generate(str(path_obj.with_suffix('.yaml')), postman_data_path, scene_dirs)

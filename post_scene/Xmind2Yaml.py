@@ -11,7 +11,7 @@ class XMindConverter:
         try:
             float(s.strip())
             return True
-        except (ValueError, AttributeError):
+        except (ValueError, AttributeError, TypeError):
             return False
 
     @staticmethod
@@ -48,7 +48,6 @@ class XMindConverter:
             for topic in topics:
                 if self.is_end_node(topic):
                     val = topic.get('topics', [{}])[0].get('title', '')
-                    # 处理整数与浮点数转换
                     if self.is_number(val):
                         container[topic['title']] = float(val) if '.' in val else int(val)
                     else:
@@ -75,4 +74,4 @@ def xmind2Yaml(path, file_name):
         with open(yaml_file, 'w', encoding='UTF-8') as f:
             YAML().dump(yaml_data, f)
     except Exception as e:
-        print(f"❌ XMind 转换失败: {e}")
+        print(f"转换失败: {e}")
