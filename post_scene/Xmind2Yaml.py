@@ -11,7 +11,7 @@ class XMindConverter:
         try:
             float(s.strip())
             return True
-        except ValueError:
+        except (ValueError, AttributeError):
             return False
 
     @staticmethod
@@ -27,7 +27,7 @@ class XMindConverter:
 
     def parse_node(self, node, container, is_script_mode=False):
         """递归解析 XMind 节点数据"""
-        title = node.get('title', '')
+        title = node.get('title', '').strip()
         topics = node.get('topics', [])
 
         if not is_script_mode:
@@ -47,9 +47,12 @@ class XMindConverter:
         else:
             for topic in topics:
                 if self.is_end_node(topic):
-                    val = topic['topics'][0]['title']
-                    # 处理整数转换
-                    container[topic['title']] = int(val) if self.is_number(val) and '.' not in val else val
+                    val = topic.get('topics', [{}])[0].get('title', '')
+                    # 处理整数与浮点数转换
+                    if self.is_number(val):
+                        container[topic['title']] = float(val) if '.' in val else int(val)
+                    else:
+                        container[topic['title']] = val
                 else:
                     data = {}
                     container[topic['title']] = data
@@ -57,7 +60,7 @@ class XMindConverter:
 
 
 def xmind2Yaml(path, file_name):
-    """主转换函数"""
+    """主转换入口"""
     base_path = Path(path).resolve()
     xmind_file = base_path / f"{file_name}.xmind"
     yaml_file = base_path / f"{file_name}.yaml"
@@ -72,4 +75,4 @@ def xmind2Yaml(path, file_name):
         with open(yaml_file, 'w', encoding='UTF-8') as f:
             YAML().dump(yaml_data, f)
     except Exception as e:
-        print(f"转换失败: {e}")
+        print(f"❌ XMind 转换失败: {e}")

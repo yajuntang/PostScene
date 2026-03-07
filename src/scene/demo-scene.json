@@ -1,6 +1,6 @@
 {
     "info": {
-        "_postman_id": "0735fd25-08a7-4463-b1ef-391457d8a13e",
+        "_postman_id": "2bdb854c-d3db-48d2-8979-df61ee5aa2bb",
         "name": "demo-scene",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
@@ -40,15 +40,15 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "5fa86961-cfe8-450f-a144-ad9605930de0",
+                                "id": "f7b3587f-5652-413c-83d8-acbfa8631fd8",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
                                     "vars = pm.variables;",
-                                    "pm.variables.set(\"userName\", \"user\");",
-                                    "pm.variables.set(\"password\", \"user123\");",
-                                    "pm.variables.set(\"time\", parseInt(new Date().getTime()/1000));",
-                                    "pm.variables.set(\"onceToken\", CryptoJS.MD5(new Date().getTime().toString()).toString());",
+                                    "pm.globals.set(\"userName\", \"user\");",
+                                    "pm.globals.set(\"password\", \"user123\");",
+                                    "pm.globals.set(\"time\", parseInt(new Date().getTime()/1000));",
+                                    "pm.globals.set(\"onceToken\", CryptoJS.MD5(new Date().getTime().toString()).toString());",
                                     "\n/*****          \u751f\u6210\u7684\u4ee3\u7801\u8bf7\u52ff\u4fee\u6539        ******/    \n// \u8fde\u63a5\u53c2\u6570\nfunction con_params(params){\n    if(typeof(params) == \"string\"){\n        if(/\\{\\{[\\w]+\\}\\}/.test(params))\n            return vars.get(params.match(/[\\w]+/))\n        return params;\n    }\n    else {\n        let sort_keys = Object.keys(params).sort();\n        let s = '';\n        for(let i in sort_keys) {\n            let k = sort_keys[i];\n            s += k + \"=\" + con_params(params[k]) + \"&\";\n        }\n        return s;\n    }\n}\n\n// \u751f\u6210\u7b7e\u540d\nfunction cal_sign(secret,params){\n    var s = con_params(params);\n    return CryptoJS.MD5(s+\"secret=\"+secret).toString();\n    \n}\n\nvar secret= \"1850e165f1fc19420f2ba3d3a1a5ffe4\" \nlet params = {}\nif (pm.request.method == 'GET')\n    pm.request.url.query.map(it=> params[it.key] = it.value)\nelse\n    params = typeof(request.data) === 'string' ? JSON.parse(request.data) : request.data\ndelete params['sign'];             // \u53bb\u6389sign, \u5f97\u5230\u5143\u7d20\u8bf7\u6c42\u53c2\u6570\nsign = cal_sign(secret, params); // \u8ba1\u7b97\u7b7e\u540d\n\nvars.set('sign',sign)\n/*****  \u5982\u9700\u4fee\u6539\u8bf7\u4fee\u6539python\u5de5\u7a0b\u7684models.sign   ******/   \n"
                                 ]
                             }
@@ -56,11 +56,11 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "e749c398-4b04-408f-8733-ab32f000a1bb",
+                                "id": "20816cdc-46df-45b1-abee-ad13ad289245",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
-                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
                                     "vars = pm.variables;",
                                     "tests['\u65ad\u8a00 json.data.code == \"1\" \u6210\u7acb'] = json.data.code == '1'\ntry{ if(json.data.code == '1'){ \n\tpm.variables.set(\"token\", json.data.token);\n\tpm.variables.set(\"uid\", json.data.uid); } }catch(e){ console.log(e) };"
                                 ]
@@ -118,7 +118,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "4ae46c3c-c629-4719-a2a0-49fce868f66a",
+                                "id": "ad5727e7-aa61-40be-8df5-782b76799f48",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -130,11 +130,11 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "63f8456c-845b-4539-9873-f75f5802d36c",
+                                "id": "1cd0ad4c-9925-4c14-b197-07cc986448f8",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
-                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
                                     "vars = pm.variables;",
                                     "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n"
                                 ]
@@ -173,7 +173,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "512bcd80-d69c-44f9-94e3-b39ba828f1ea",
+                                "id": "22974876-f263-4e7c-bfe0-6cac75d3f13f",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -187,7 +187,7 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "6949e057-e179-4d82-a960-670eabe33997",
+                                "id": "6c93a8c5-bcbe-4ad6-8449-5fb8ec6fa014",
                                 "type": "text/javascript",
                                 "exec": []
                             }
@@ -231,7 +231,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "c47ee67b-a2bd-44f2-a565-d1b2c3805f97",
+                                "id": "03072148-cbf1-49ce-88d5-8a9144346ab5",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -247,11 +247,11 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "bc7e5092-d728-4b1b-97db-8adeeb652d39",
+                                "id": "22551471-3b21-445f-a71f-10cac2651c32",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
-                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
                                     "vars = pm.variables;",
                                     "tests['\u65ad\u8a00 json.data.code === \"1\" \u6210\u7acb'] = json.data.code === '1'\ntry{ if(json.data.code === '1'){ \n\tpm.variables.set(\"token\", json.data.token);\n\tpm.variables.set(\"uid\", json.data.uid); } }catch(e){ console.log(e) };"
                                 ]
@@ -309,7 +309,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "527e5beb-0dde-4900-a702-866f2dc34fa9",
+                                "id": "d4c3f499-39f2-4f02-a229-281323e0a028",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -322,11 +322,11 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "6fa4b1b2-629b-425b-bf8e-82a480861043",
+                                "id": "e09a450f-1877-42c1-aa36-6baa8f6eb389",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
-                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
                                     "vars = pm.variables;",
                                     "\npm.test('\u65ad\u8a00 json.data.canteenList \u662f\u5305\u542b\"\u559c\u8336\"', function () {\n    json.data.canteenList.forEach(it=> pm.expect(it.name).to.include(\"\u559c\u8336\"));\n\tpm.variables.set(\"canteenId\", (()=>{\n        let data = json.data.canteenList.find(it=>  it.canteenName == '\u559c\u8336GO')\n        if (data) data = data.canteenId\n        return data})()\n);\n});    \n"
                                 ]
@@ -390,7 +390,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "fc94c6aa-fb71-4c03-8401-cf92708b7c1e",
+                                "id": "e38dcb6e-d313-4cc5-9f35-7a52879c4a1b",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -403,11 +403,11 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "98799582-d154-4e77-b2c5-24ea660f365a",
+                                "id": "e541d7b1-5fe2-4405-9cfe-7b8387c022bc",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
-                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
                                     "vars = pm.variables;",
                                     "\npm.test('\u65ad\u8a00 json.data.goodsList \u662f\u5305\u542b\"\u5965\u5229\u5965\u5343\u5c42\"', function () {\n    json.data.goodsList.forEach(it=> pm.expect(item.name).to.include(\"\u5965\u5229\u5965\u5343\u5c42\"));\n\tpm.variables.set(\"goodsId\", (()=>{\n        let data = json.data.goodsList.find(it=>  it.goodsName == '\u5965\u5229\u5965\u5343\u5c42')\n        if (data) data = data.goodsId\n        return data})()\n);\n});    \n"
                                 ]
@@ -461,7 +461,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "d1d94c47-da97-4baa-8175-4e353b6b82bb",
+                                "id": "84345dc0-81aa-451f-89e7-8b56522e6c0a",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -474,11 +474,11 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "e4ce579a-8c53-483c-be09-a22e982b3646",
+                                "id": "fc440eca-d352-4bfe-baaf-e6db60a97908",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
-                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
                                     "vars = pm.variables;",
                                     "tests['\u65ad\u8a00 json.code === \"1\" \u6210\u7acb'] = json.code === '1'\ntry{ if(json.code === '1'){ \n\tpm.variables.set(\"pocketId\", json.data.pocketId); } }catch(e){ console.log(e) };"
                                 ]
@@ -532,7 +532,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "1c366de5-0f39-45f3-b46e-0a83ab017ef5",
+                                "id": "0f039408-5884-4532-aeda-e8feb63d2cc7",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -544,11 +544,11 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "2dc1b40a-872e-4885-a073-b11785d16544",
+                                "id": "c5e84731-6ae6-4856-8c93-0ada89bf9ca6",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
-                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
                                     "vars = pm.variables;",
                                     "tests['\u65ad\u8a00 json.code === \"1\" \u6210\u7acb'] = json.code === '1'\ntry{ if(json.code === '1'){ \n\tpm.variables.set(\"orderId\", json.data.orderId); } }catch(e){ console.log(e) };"
                                 ]
@@ -602,7 +602,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "786b28fb-8afc-4a0b-b7e5-0b7aede8e279",
+                                "id": "3d59d788-1bc4-4196-9d8f-8498c5c6c7c6",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -614,11 +614,11 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "6462f00a-6ddd-4e71-bc54-c7ec6d9cdb4b",
+                                "id": "96f64397-cd37-4185-a725-dae1e6d8cbb3",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
-                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
                                     "vars = pm.variables;",
                                     "tests['\u65ad\u8a00 json.code === \"1\" \u6210\u7acb'] = json.code === '1'"
                                 ]
@@ -657,7 +657,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "0e664498-e92a-4b46-b399-ccd1c3ff308c",
+                                "id": "a99897cd-8002-410b-a764-e2a049708f67",
                                 "type": "text/javascript",
                                 "exec": []
                             }
@@ -665,11 +665,11 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "2f2282f1-3df8-406f-8d02-95a9e13806ba",
+                                "id": "f6ecd0b8-70cc-4177-a3f9-c352cfbbaff1",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
-                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
                                     "vars = pm.variables;",
                                     "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n",
                                     "\npm.test('\u65ad\u8a00 json.data.orders \u662f\u7b49\u4e8e1', function () {\n    json.data.orders.forEach(it=> pm.expect().to.eql(1));item.status\n});    \n",
@@ -710,7 +710,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "561abeae-cfae-435c-987a-856740d4f8b1",
+                                "id": "cdf8159b-ec35-4685-a386-42b2d70ee490",
                                 "type": "text/javascript",
                                 "exec": []
                             }
@@ -718,11 +718,11 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "0d701b34-895a-48e8-96fd-4243d784d0f0",
+                                "id": "6f3f86ef-4152-4213-a366-9bff9b17bdcf",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
-                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
                                     "vars = pm.variables;",
                                     "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n",
                                     "\npm.test('\u65ad\u8a00 json.data.orders \u662f\u7b49\u4e8e0', function () {\n    json.data.orders.forEach(it=> pm.expect().to.eql(0));item.status\n});    \n"
@@ -921,7 +921,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "84e6c72c-6eae-49b7-ad24-ed0fa9dcb877",
+                                "id": "7a876d31-62a0-4128-900e-4d25c8598630",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -961,11 +961,11 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "f66d914a-0f4f-4b0f-b50e-f92fcb7356d8",
+                                "id": "a0dd4ff3-3783-4db5-994c-5ff80983680c",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
-                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
                                     "vars = pm.variables;",
                                     "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n",
                                     "tests['\u65ad\u8a00 json.data.code === \"2\" \u6210\u7acb'] = json.data.code === '2'",
@@ -978,7 +978,7 @@
             ]
         },
         {
-            "name": "\u6743\u9650\u8ba4\u8bc1",
+            "name": "\u6388\u6743",
             "item": [
                 {
                     "name": "\u901a\u8fc7\u9910\u5385\u540d\u5b57\u641c\u7d22\u9910\u5385",
@@ -1035,7 +1035,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "d73ce9c2-a6b3-426c-8190-fd2a14787e44",
+                                "id": "1e789603-7e71-44f1-9661-99fc98efa38f",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -1047,11 +1047,11 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "d094912c-3d54-463b-9cc5-e2f95011157e",
+                                "id": "8fe1e7b1-761f-40a8-b7ce-5dbe652e3ede",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
-                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
                                     "vars = pm.variables;",
                                     "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n"
                                 ]
@@ -1124,7 +1124,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "045201d2-19a6-4dee-92b0-5860a40090e2",
+                                "id": "2d4478d4-506b-4d30-97b8-41816280817b",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -1136,11 +1136,11 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "31fe292c-ebac-45bb-8146-73b6962c718d",
+                                "id": "d9c69b93-e120-411d-bfe0-fbd00639c921",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
-                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
                                     "vars = pm.variables;",
                                     "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n"
                                 ]
@@ -1208,7 +1208,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "29f843e6-1f86-44ab-b595-09ed00162483",
+                                "id": "4d44778c-7f29-4b49-8eae-5dfdedef7d46",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -1220,11 +1220,11 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "88296d9e-17b6-4275-8e9b-99366cc7161f",
+                                "id": "990c8ecf-c265-4722-a1d4-1b7885137faa",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
-                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
                                     "vars = pm.variables;",
                                     "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n"
                                 ]
@@ -1297,7 +1297,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "7369e072-e79b-4570-9f76-3fd38bfae391",
+                                "id": "5c70ba94-1d7c-4c9d-be4a-4f21a4fa513f",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -1309,11 +1309,11 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "6a28b13e-c514-4308-bb83-02c534015296",
+                                "id": "373b25be-34b7-4da5-a444-b08faa016215",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
-                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
                                     "vars = pm.variables;",
                                     "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n"
                                 ]
@@ -1401,7 +1401,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "c867c9a1-9747-4def-9a78-2b211862094b",
+                                "id": "158c0da6-268c-4adb-a451-6a7a8d22c9f0",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -1413,11 +1413,11 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "97f97b63-cb58-4cb2-a376-56a6f56e7fc9",
+                                "id": "ecfc0292-6a2f-4a18-a335-153fa93f9473",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
-                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
                                     "vars = pm.variables;",
                                     "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n"
                                 ]
@@ -1485,7 +1485,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "5387ea20-7e13-4e70-9e87-949bb7f530f7",
+                                "id": "3546d844-98c1-409f-a5e9-446978ee8c64",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -1497,11 +1497,11 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "2502fd1c-cd08-4212-a0fb-f962dec940a1",
+                                "id": "573ee1f6-478b-4424-98bb-42a11c41d2cd",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
-                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
                                     "vars = pm.variables;",
                                     "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n"
                                 ]
@@ -1579,7 +1579,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "8d798fd3-7552-4880-8e92-15672b425196",
+                                "id": "172ab67a-251e-4c68-8375-34f4a5769b5f",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -1591,11 +1591,11 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "9a9093de-8330-4574-b7de-d71408f3cece",
+                                "id": "57bfb827-ac35-4413-bc8e-1255ae923eb8",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
-                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
                                     "vars = pm.variables;",
                                     "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n"
                                 ]
@@ -1663,7 +1663,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "7cffb030-a5f7-4f52-8678-03fbde8c730e",
+                                "id": "2721ac8c-6634-474f-9707-daf6b4389976",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -1675,11 +1675,11 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "6ea19ba2-0e33-435c-b9b3-e0d76cd6513c",
+                                "id": "d632e692-66a8-44a6-b378-51ce96874752",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
-                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
                                     "vars = pm.variables;",
                                     "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n"
                                 ]
@@ -1752,7 +1752,7 @@
                         {
                             "listen": "prerequest",
                             "script": {
-                                "id": "a59ce6a4-1a17-4be5-93bb-6c8ace03c824",
+                                "id": "209d6520-38ab-4afa-b6ea-bba001ebcc30",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
@@ -1764,11 +1764,11 @@
                         {
                             "listen": "test",
                             "script": {
-                                "id": "a4db1735-6c63-4d32-8eaa-5b3e9d72a23f",
+                                "id": "26cf72a3-8516-4670-8a21-095a2411cd26",
                                 "type": "text/javascript",
                                 "exec": [
                                     "/** \u81ea\u52a8\u751f\u6210\u7684\u4ee3\u7801 **/",
-                                    "json = pm.response.json();",
+                                    "vars = pm.variables;",
                                     "vars = pm.variables;",
                                     "\npm.test('\u65ad\u8a00 status \u6709200', function () {\n    pm.response.to.have.status(200);\n});\n"
                                 ]
@@ -1776,27 +1776,7 @@
                         }
                     ]
                 }
-            ],
-            "auth": {
-                "type": "bearer",
-                "bearer": [
-                    {
-                        "key": "token",
-                        "value": "1850e165f1fc19420f2ba3d3a1a5ffe4",
-                        "type": "string"
-                    }
-                ]
-            }
+            ]
         }
-    ],
-    "auth": {
-        "type": "bearer",
-        "bearer": [
-            {
-                "key": "token",
-                "value": "1850e165f1fc19420f2ba3d3a1a5ffe4",
-                "type": "string"
-            }
-        ]
-    }
+    ]
 }

@@ -7,19 +7,20 @@ from post_scene.Xmind2Yaml import xmind2Yaml
 from post_scene.creator import PostmanJson
 from post_scene.parser import Utils, Parse
 
+
 class PostScene:
     @staticmethod
-    def fetch_postman_data(source: str):
-        """获取远程或本地 Postman 数据"""
+    def check_postman_url(source: str):
+        """获取 Postman 集合数据（支持 URL 或本地文件）"""
         try:
             if source.startswith('http'):
-                resp = requests.get(source, timeout=30)
+                resp = requests.get(source, timeout=60)
                 resp.raise_for_status()
                 return resp.json()
             with open(source, 'r', encoding='utf-8') as f:
                 return json.load(f)
         except Exception as e:
-            logging.error(f"Postman 数据加载异常: {e}")
+            logging.error(f"加载 Postman 数据失败: {e}")
             return None
 
     @staticmethod
@@ -38,7 +39,7 @@ class PostScene:
             else:
                 item = Utils.find_postman_item_by_name(scene['name'], postman_data['item'])
                 if item:
-                    # 使用深拷贝确保数据独立性
+                    # 使用深拷贝避免修改原始 postman_data
                     target = json.loads(json.dumps(item))
                     target['request'] = Utils.replace_params_name(target['request'], scene['params-name'])
                     Utils.replace_auth_data(target['request'], scene['auth'])
@@ -52,13 +53,14 @@ class PostScene:
 
     @staticmethod
     def generate(yaml_path, postman_data_path, scene_dirs='../scene'):
-        """生成 Postman 脚本文件"""
+        """执行 YAML 到 Postman JSON 的生成"""
         with open(yaml_path, 'r', encoding='utf-8') as f:
             script = YAML().load(f)
 
         scenes = Parse.parse_scene(script['scene'])
-        postman_data = PostScene.fetch_postman_data(postman_data_path)
-        if not postman_data: return
+        postman_data = PostScene.check_postman_url(postman_data_path)
+        if not postman_data:
+            return
 
         new_collection = {
             "info": PostmanJson.create_info(script['name']),
@@ -71,7 +73,9 @@ class PostScene:
         if 'variable' in postman_data:
             new_collection['variable'] = postman_data['variable']
 
-        output_path = Path(scene_dirs) / f"{script['name']}.json"
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(output_path, 'w', encoding='utf-8') as f:
+        output_dir = Path(scene_dirs)
+        output_dir.mkdir(parents=True, exist_ok=True)
+        output_file = output_dir / f"{script['name']}.json"
+
+        with open(output_file, 'w', encoding='utf-8') as f:
             json.dump(new_collection, f, indent=4, ensure_ascii=False)

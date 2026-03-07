@@ -26,7 +26,6 @@ scene:
         tests:
           assert:
             status: 200
-
     - 已支付订单列表:
         pre:
           sign:
