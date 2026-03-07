@@ -1,86 +1,75 @@
 import os
-
+from pathlib import Path
 import xmind
 from ruamel.yaml import YAML
 
 
-def is_number(s: str):
-    s = s.strip()
-    if s.isdigit():
-        return True
-    if s.count('.') == 1:
-        left = s.split('.')[0]
-        right = s.split('.')[1]
-        if right.isdigit():
-            if left.count('-') == 1 and left.startswith('-'):
-                num = left[1:]
-                if num.isdigit():
-                    return True
-            elif left.isdigit():
-                return True
-    elif s.startswith('-') and s.count('-') == 1:
-        return s[1:].isdigit()
+class XMindConverter:
+    @staticmethod
+    def is_number(s: str):
+        """判定字符串是否为数字"""
+        try:
+            float(s.strip())
+            return True
+        except ValueError:
+            return False
 
-    return False
+    @staticmethod
+    def has_tests_title(node: dict) -> bool:
+        """检查子节点是否包含 'tests' 标题"""
+        return any(child.get('title') == 'tests' for child in node.get('topics', []))
 
+    @staticmethod
+    def is_end_node(node: dict) -> bool:
+        """判定是否为末梢节点"""
+        topics = node.get('topics', [])
+        return not topics or 'topics' not in topics[0]
 
-def has_tests_title(node: dict) -> bool:
-    if 'topics' in node:
-        for child in node['topics']:
-            if child['title'] == 'tests':
-                return True
-    return False
+    def parse_node(self, node, container, is_script_mode=False):
+        """递归解析 XMind 节点数据"""
+        title = node.get('title', '')
+        topics = node.get('topics', [])
 
-
-def is_end(node: dict) -> bool:
-    topics = node['topics']
-    return 'topics' not in topics[0]
-
-
-def parse_xmind_data(xmind_node, yaml_data, is_script):
-    if not is_script:
-        if has_tests_title(xmind_node):  # 判断子节点是否有tests
-            yaml_data[xmind_node['title']] = {}
-            if 'topics' in xmind_node:
-                topics = xmind_node['topics']
+        if not is_script_mode:
+            if self.has_tests_title(node):
+                container[title] = {}
                 for topic in topics:
                     data = {}
-                    yaml_data[xmind_node['title']][topic['title']] = data
-                    parse_xmind_data(topic, data, True)
+                    container[title][topic['title']] = data
+                    self.parse_node(topic, data, True)
+            else:
+                container['name'] = title
+                container['scene'] = []
+                for topic in topics:
+                    data = {}
+                    container['scene'].append(data)
+                    self.parse_node(topic, data, False)
         else:
-            yaml_data['name'] = xmind_node['title']
-            yaml_data['scene'] = []
-            if 'topics' in xmind_node:
-                topics = xmind_node['topics']
-                for topic in topics:
-                    data = {}
-                    yaml_data['scene'].append(data)
-                    parse_xmind_data(topic, data, False)
-    else:
-        if 'topics' in xmind_node:
-            topics = xmind_node['topics']
             for topic in topics:
-
-                if is_end(topic):
-                    data = topic['topics'][0]['title']
-                    if is_number(data): data = int(data)
-                    yaml_data[topic['title']] = data
+                if self.is_end_node(topic):
+                    val = topic['topics'][0]['title']
+                    # 处理整数转换
+                    container[topic['title']] = int(val) if self.is_number(val) and '.' not in val else val
                 else:
                     data = {}
-                    yaml_data[topic['title']] = data
-                    parse_xmind_data(topic, data, True)
+                    container[topic['title']] = data
+                    self.parse_node(topic, data, True)
 
 
 def xmind2Yaml(path, file_name):
-    file_path = os.path.join(os.path.abspath(path), file_name + ".xmind")
-    workbook = xmind.load(file_path)
-    xmind_data = workbook.getPrimarySheet().getRootTopic().getData()
-    yaml_data = {}
-    parse_xmind_data(xmind_data, yaml_data, False)
-    stream = open(os.path.join(os.path.abspath(path), file_name + ".yaml"), 'w', encoding='UTF-8')
-    yaml = YAML()
-    yaml.dump(yaml_data, stream)
+    """主转换函数"""
+    base_path = Path(path).resolve()
+    xmind_file = base_path / f"{file_name}.xmind"
+    yaml_file = base_path / f"{file_name}.yaml"
 
-# xmind2Yaml('../', '自动化测试')
+    try:
+        workbook = xmind.load(str(xmind_file))
+        root_data = workbook.getPrimarySheet().getRootTopic().getData()
 
+        yaml_data = {}
+        XMindConverter().parse_node(root_data, yaml_data)
 
+        with open(yaml_file, 'w', encoding='UTF-8') as f:
+            YAML().dump(yaml_data, f)
+    except Exception as e:
+        print(f"转换失败: {e}")

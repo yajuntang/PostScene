@@ -1,78 +1,69 @@
-from post_scene.models import Models
-
-
 class BuiltFunction:
+    @staticmethod
+    def smart_split(s: str, delimiter: str = ','):
+        """支持括号感知的参数分割"""
+        parts = []
+        bracket_level = 0
+        current_part = []
+        for char in s:
+            if char == '(':
+                bracket_level += 1
+            elif char == ')':
+                bracket_level -= 1
+
+            if char == delimiter and bracket_level == 0:
+                parts.append("".join(current_part).strip())
+                current_part = []
+            else:
+                current_part.append(char)
+        parts.append("".join(current_part).strip())
+        return parts
 
     @staticmethod
     def parse_built_function(value: str):
-        if not isinstance(value, str): return value
-        if not value.startswith('$'): return value
-        value = value.strip()
-        index = BuiltFunction.check_last_parentheses(value)
-        if index == -1: value = value + '()'
-        if index == -1: index = value.index(')')
-        function_call = value[:index + 1]
-        field = value[index + 1:]
-        function_name = function_call[1:value.index('(')]
-        params = function_call[function_call.index('(') + 1:-1].split(',')
-        new_params = []
-        for param in params:
-            new_params.append(BuiltFunction.parse_built_function(param))
-
-        if function_name == 'find':
-            return Models.check_find.format(new_params[0], new_params[1], field)
-        elif function_name == 'find_last':
-            return Models.check_find_last.format(new_params[0], new_params[1], field)
-        elif function_name == 'last':
-            return '{0}[{0}.length - 1]{1}'.format(new_params[0], field)
-        elif function_name == 'filter':
-            if field == '': field = 'it'
-            elif field.startswith('.'): field = 'it'+field
-            return Models.check_filter.format(new_params[0],new_params[1], field)
-        elif function_name == 'uuid32':
-            return 'CryptoJS.MD5(new Date().getTime().toString()).toString()'
-        elif function_name == 'timeS':
-            return 'new Date({0}).getTime()'.format(new_params[0])
-        elif function_name == 'times':
-            return 'parseInt(new Date({0}).getTime()/1000)'.format(new_params[0])
-        elif function_name == 'md5':
-            return 'CryptoJS.MD5({0}).toString()'.format(new_params[0])
-        elif function_name == 'weekStart':
-            return Models.get_week_start
-        elif function_name == 'weekEnd':
-            return Models.get_week_end
-        elif function_name == 'lastWeekStart':
-            return Models.get_last_week_start
-        elif function_name == 'lastWeekEnd':
-            return Models.get_last_week_end
-        elif function_name == 'monthStart':
-            return Models.get_month_start
-        elif function_name == 'monthEnd':
-            return Models.get_month_end
-        elif function_name == 'lastMonthStart':
-            return Models.get_last_month_start
-        elif function_name == 'lastMonthEnd':
-            return Models.get_last_month_end
-        elif function_name == 'last7DaysStart':
-            return Models.get_before_date.format(-7)
-        elif function_name == 'last30DaysStart':
-            return Models.get_before_date.format(-30)
-        elif function_name == 'dateFormat':
-            return Models.date_format.format(new_params[0], new_params[1])
-        else:
+        """解析内置函数调用"""
+        if not isinstance(value, str) or not value.startswith('$'):
             return value
 
+        value = value.strip()
+        last_paren_idx = BuiltFunction.get_closing_paren_idx(value)
+
+        if last_paren_idx == -1:
+            value += '()'
+            last_paren_idx = value.rfind(')')
+
+        call_part = value[:last_paren_idx + 1]
+        field_part = value[last_paren_idx + 1:]
+
+        open_paren_idx = call_part.find('(')
+        func_name = call_part[1:open_paren_idx]
+        raw_params = call_part[open_paren_idx + 1:-1]
+
+        params = [BuiltFunction.parse_built_function(p) for p in BuiltFunction.smart_split(raw_params) if p]
+
+        from post_scene.models import Models
+        # 使用映射字典提高可读性
+        mapping = {
+            'find': lambda p, f: Models.check_find.format(p[0], p[1], f),
+            'uuid32': lambda p, f: 'CryptoJS.MD5(new Date().getTime().toString()).toString()',
+            'md5': lambda p, f: f'CryptoJS.MD5({p[0]}).toString()',
+            'dateFormat': lambda p, f: Models.date_format.format(p[0], p[1]),
+            'weekStart': lambda p, f: Models.get_week_start,
+            'monthStart': lambda p, f: Models.get_month_start,
+        }
+
+        if func_name in mapping:
+            return mapping[func_name](params, field_part)
+        return value
+
     @staticmethod
-    def check_last_parentheses(value):
+    def get_closing_paren_idx(value):
+        """精确定位外层括号索引"""
         stack = []
-        index = 0
-        for char in value:
+        for i, char in enumerate(value):
             if char == '(':
-                stack.append(index)
+                stack.append(i)
             elif char == ')':
-                if len(stack) == 1:
-                    return index
-                else:
-                    stack.pop()
-            index = index + 1
+                if len(stack) == 1: return i
+                if stack: stack.pop()
         return -1

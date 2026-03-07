@@ -10,7 +10,7 @@ set_mapping = {
     'set-global': 'set_global_var',  # 设置全局变量的值
     'set-env': 'set_env_var',  # 设置环境变量的值
     'set-collect': 'set_collect_var',  # 设置集合变量的值
-    'set': 'set_var',               # 设置变量值
+    'set': 'set_var',  # 设置变量值
     'unset-global': 'unset_global_var',
     'unset-env': 'unset_env_var',
     'unset-collect': 'unset_collect_var',
@@ -91,7 +91,7 @@ class Utils:
         return request_item
 
     @staticmethod
-    def replace_auth_data(request,scene_auth):
+    def replace_auth_data(request, scene_auth):
         if len(scene_auth) == 0:
             return
         if 'auth' not in request:
@@ -101,17 +101,16 @@ class Utils:
         if request_auth['type'] != scene_auth['type']:
             request['auth'] = scene_auth
             return
-        auth:List = request_auth[request_auth['type']]
+        auth: List = request_auth[request_auth['type']]
         scene_auth = scene_auth[scene_auth['type']]
         for scene_auth_item in scene_auth:
-             found = False
-             for item in auth:
-                 if item['key'] == scene_auth_item['key']:
-                     item['value'] = scene_auth_item['value']
-                     found = True
-             if found is False:
+            found = False
+            for item in auth:
+                if item['key'] == scene_auth_item['key']:
+                    item['value'] = scene_auth_item['value']
+                    found = True
+            if found is False:
                 auth.append(scene_auth_item)
-
 
     @staticmethod
     def parse_json_params(json_data, name: str, value):
@@ -176,7 +175,7 @@ class Parse:
                 params_name.extend(map(lambda x: {x: x}, value.strip().split(",")))
 
     @staticmethod
-    def parse_auth(pre,auth_bean):
+    def parse_auth(pre, auth_bean):
         auth_parser.parse_auth(pre, auth_bean)
 
     @staticmethod
@@ -184,7 +183,7 @@ class Parse:
         script = []
         params_name = []
         for key in pre:
-            if key in set_mapping:
+            if key in set_mapping:#set_mapping ，里的关键字，    'set': 'set_var',  # 设置变量值 key，关键字
                 for name in pre[key]:
                     set_value = pre[key][name]
                     alisa_name = name
@@ -194,13 +193,11 @@ class Parse:
                         set_value = item[1]
                     script.append(
                         SetMethod.get_method(set_mapping[key])(Utils.format_value(alisa_name),
-                                                               Utils.format_value(set_value)))
+                                                               Utils.format_value(set_value)))#[set_value是creator.py里的set_var。然后调用handle方法，设置参数]
                     params_name.append({name: alisa_name})
             elif key == 'code':
                 script.append(pre[key])
         return script, params_name
-
-
 
     @staticmethod
     def parse_next(next_data):
@@ -331,7 +328,7 @@ class Parse:
         return script
 
     @staticmethod
-    def parse_tests(tests):
+    def parse_tests(tests): #断言
         script = []
         for key in tests:
             if key == 'code':
@@ -356,20 +353,22 @@ class Parse:
         return script
 
 
-
+# parse_scene  这里for循环的是 获取30天内订单记录
+# parse_scene  这里for循环的是 demo-scene
     @staticmethod
     def parse_scene(scenes_val):
+
         scenes_of_processed = []
         for item in scenes_val:
-            if 'name' in item:
+            if 'name' in item:  # 文件夹
                 folder = {
                     'name': item['name'],
                     'auth': {},
                     'scene': Parse.parse_scene(item['scene'])
                 }
-                Parse.parse_auth(item,folder['auth'])
+                Parse.parse_auth(item, folder['auth'])
                 scenes_of_processed.append(folder)
-            else:
+            else:  # 请求
                 for key in item:
                     scene_data = item[key]
                     pre_scripts = []
@@ -377,23 +376,23 @@ class Parse:
                     params_name = []
                     auth = {}
                     scene_bean = {'name': key, 'pre-scripts': pre_scripts, 'scripts': scripts,
-                                  'params-name': params_name,'auth':auth}
+                                  'params-name': params_name, 'auth': auth}
                     scenes_of_processed.append(scene_bean)
                     if 'pre' in scene_data:
-                        Parse.parse_auth(scene_data['pre'],auth)
+                        Parse.parse_auth(scene_data['pre'], auth)
                         Parse.parse_ref(scene_data['pre'], params_name)
                         pre_parse_data = Parse.parse_pre(scene_data['pre'])
                         pre_scripts.extend(pre_parse_data[0])
                         pre_scripts.append(Parse.parse_sign(scene_data['pre'], params_name))
                         params_name.extend(pre_parse_data[1])
-                    if 'tests' in scene_data:
+                    if 'tests' in scene_data:#断言
                         scripts.extend(Parse.parse_tests(scene_data['tests']))
                     if 'textTests' in scene_data:
                         scripts.extend(Parse.parse_tests(scene_data['textTests']))
                     if len(scripts) > 0:
                         scripts.insert(0, SetMethod.create_vars())
                         if 'tests' in scene_data:
-                            scripts.insert(0, SetMethod.create_get_json())
+                            scripts.insert(0, SetMethod.create_vars())
                         if 'textTests' in scene_data:
                             scripts.insert(0, SetMethod.create_get_text())
                         scripts.insert(0, "/** 自动生成的代码 **/")

@@ -39,7 +39,7 @@ class SetMethod:
 
     @staticmethod
     def set_var(key, value):
-        key, value = SetMethod.handle(key, value)
+        key, value = SetMethod.handle(key, value) #[set_value是parser.py里的set_var。然后调用handle方法]
         return 'pm.variables.set({0}, {1});'.format(key, value)
 
     @staticmethod
@@ -59,7 +59,7 @@ class SetMethod:
         return 'pm.variables.unset({0}, {1});'.format(key, value)
 
     @staticmethod
-    def handle(key: str, value: str):
+    def handle(key: str, value: str):#[set_value是creator.py里的set_var。然后调用handle方法]
         return key, BuiltFunction.parse_built_function(value)
 
     @staticmethod

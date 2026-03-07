@@ -103,7 +103,7 @@ def parse_item(item, auth_name, auth_items):
         auth_items.extend(default_parse(item))
 
 
-def parse_auth(pre, auth_bean):
+def parse_auth(pre, auth_bean):#验证pre里面是否有auth
     if 'auth' in pre:
         if isinstance(pre['auth'], dict):
             for key in pre['auth']:
