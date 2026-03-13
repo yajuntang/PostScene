@@ -255,7 +255,7 @@ pm.test({0}, function () {{
 }})({0},{1})
 """
 
-    sign = """
+    sign = r"""
 /*****          生成的代码请勿修改        ******/    
 // 连接参数
 function con_params(params){{
