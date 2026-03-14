@@ -60,7 +60,7 @@ class PostScene:
         scenes = Parse.parse_scene(script['scene'])
         postman_data = PostScene.check_postman_url(postman_data_path)
         if not postman_data:
-            return
+            return None
 
         new_collection = {
             "info": PostmanJson.create_info(script['name']),
@@ -79,13 +79,20 @@ class PostScene:
 
         with open(output_file, 'w', encoding='utf-8') as f:
             json.dump(new_collection, f, indent=4, ensure_ascii=False)
+        return str(output_file)
 
     @staticmethod
     def covert(script_path, postman_data_path, scene_dirs='./scene'):
         """统一转换入口"""
         path_obj = Path(script_path)
         if script_path.endswith('.yaml'):
-            PostScene.generate(script_path, postman_data_path, scene_dirs)
+            return PostScene.generate(script_path, postman_data_path, scene_dirs)
         elif script_path.endswith('.xmind'):
             xmind2Yaml(str(path_obj.parent), path_obj.stem)
-            PostScene.generate(str(path_obj.with_suffix('.yaml')), postman_data_path, scene_dirs)
+            return PostScene.generate(str(path_obj.with_suffix('.yaml')), postman_data_path, scene_dirs)
+        raise ValueError("script_path 仅支持 .yaml 或 .xmind")
+
+    @staticmethod
+    def convert(script_path, postman_data_path, scene_dirs='./scene'):
+        """`covert` 的正确拼写别名（保持向后兼容）"""
+        return PostScene.covert(script_path, postman_data_path, scene_dirs)

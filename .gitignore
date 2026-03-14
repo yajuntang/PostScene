@@ -4,6 +4,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+.DS_Store
 .idea/workspace.xml
 setup.py
 .idea/
@@ -107,6 +108,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+# Project-specific
+postScene-env/
 
 # Spyder project settings
 .spyderproject

@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PostScene"
+version = "0.0.0"
+description = "基于 Postman 接口自动化场景设计（Xmind/Yaml -> Postman Collection）"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+authors = [{ name = "yajuntang" }]
+dependencies = [
+  "requests",
+  "ruamel.yaml>=0.17.40",
+  "jsonpath-ng",
+  "XMind==1.2.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yajuntang/PostScene"
+Repository = "https://github.com/yajuntang/PostScene"
+
+[project.scripts]
+postscene = "post_scene.cli:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["post_scene*"]
+
